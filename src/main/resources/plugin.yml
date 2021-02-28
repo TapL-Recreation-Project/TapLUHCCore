@@ -1,0 +1,9 @@
+name: TapLUHCCore
+version: ${project.version}
+main: me.swipez.uhccore.UHCCore
+api-version: 1.16
+authors: [ notnotnotswipez, YHDiamond ]
+commands:
+  uhcmenu:
+    usage: /uhcmenu
+    description: Opens the UHCCore menu.
