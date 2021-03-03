@@ -184,7 +184,6 @@ public class GUIListener implements Listener {
         plugin.isInCustomEventGUI.put(p.getUniqueId(), false);
     }
     public static ItemStack addTitleLore(ItemStack item){
-        ItemStack comparableitem = null;
         for (int i=0;i<UHCAPI.pluginList.size();i++){
             if (UHCAPI.pluginList.get(i).getDisplayStack().equals(item)){
                 ItemMeta meta = item.getItemMeta();
