@@ -1,6 +1,7 @@
 package me.swipez.uhccore.commands;
 
 import me.swipez.uhccore.UHCCore;
+import me.swipez.uhccore.api.UHCAPI;
 import me.swipez.uhccore.guis.GUIManager;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
@@ -19,7 +20,7 @@ public class UHCCommand implements CommandExecutor {
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (sender instanceof Player) {
             Player player = (Player) sender;
-            player.openInventory(GUIManager.makeStartSettingsGUI(player));
+            player.openInventory(GUIManager.makeStartSettingsGUI(player, UHCAPI.isStarted));
             plugin.isInGUI.put(player.getUniqueId(), true);
             plugin.EventGUIPages.put(player.getUniqueId(), 0);
         } else {

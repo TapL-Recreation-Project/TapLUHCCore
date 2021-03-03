@@ -14,7 +14,7 @@ public class ItemButtonManager {
             .name(ChatColor.RED+"End UHC")
             .build();
     public static final ItemStack EVENT_MODIFIERS = ItemBuilder.of(Material.FURNACE)
-            .name(ChatColor.GRAY+"Custom Events")
+            .name(ChatColor.GRAY+"BUILT-IN EVENTS")
             .build();
     public static final ItemStack PLACE_HOLDER_ITEM = ItemBuilder.of(Material.STONE)
             .name(ChatColor.GREEN+"Place Holder Item")
@@ -33,5 +33,32 @@ public class ItemButtonManager {
             .build();
     public static final ItemStack PREVIOUS_PAGE = ItemBuilder.of(Material.ARROW)
             .name(ChatColor.RED+"PREVIOUS PAGE")
+            .build();
+    public static final ItemStack INSTALLED_EVENTS = ItemBuilder.of(Material.EMERALD_BLOCK)
+            .name(ChatColor.GREEN+"INSTALLED EVENTS")
+            .build();
+    public static final ItemStack UHC_SETTINGS = ItemBuilder.of(Material.IRON_BLOCK)
+            .name(ChatColor.GOLD+"UHC SETTINGS")
+            .build();
+    public static final ItemStack BORDER_SETTINGS = ItemBuilder.of(Material.BARRIER)
+            .name(ChatColor.YELLOW+"BORDER SETTINGS")
+            .build();
+    public static final ItemStack TIMING_SETTINGS = ItemBuilder.of(Material.CLOCK)
+            .name(ChatColor.BLUE+"TIMING SETTINGS")
+            .build();
+    public static final ItemStack GRACE_PERIOD = ItemBuilder.of(Material.CLOCK)
+            .name(ChatColor.YELLOW+"GRACE PERIOD")
+            .build();
+    public static final ItemStack FINAL_HEAL = ItemBuilder.of(Material.CLOCK)
+            .name(ChatColor.YELLOW+"FINAL HEAL")
+            .build();
+    public static final ItemStack PVP = ItemBuilder.of(Material.CLOCK)
+            .name(ChatColor.YELLOW+"PVP")
+            .build();
+    public static final ItemStack BORDER = ItemBuilder.of(Material.CLOCK)
+            .name(ChatColor.YELLOW+"BORDER")
+            .build();
+    public static final ItemStack MEETUP = ItemBuilder.of(Material.CLOCK)
+            .name(ChatColor.YELLOW+"MEETUP")
             .build();
 }

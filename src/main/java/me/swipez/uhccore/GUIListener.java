@@ -33,6 +33,7 @@ public class GUIListener implements Listener {
         Player player = (Player) e.getWhoClicked();
         if (plugin.isInGUI.get(player.getUniqueId())){
             int pluginstoload = UHCAPI.pluginList.size();
+            int vanillalistsize = 0;
             int maxpagespossible = 0;
             for (int i=0;i<100;i++){
                 if (pluginstoload > 9){
@@ -61,29 +62,50 @@ public class GUIListener implements Listener {
                     e.setCancelled(true);
                 }
                 for (UHCPlugin plugin : UHCAPI.pluginList){
-                    if (clickeditem.getItemMeta().getDisplayName().equals(plugin.getDisplayStack().getItemMeta().getDisplayName()) && clickeditem.getItemMeta().getLore().equals(addTitleLore(plugin.getDisplayStack()))){
-                        if (api.contains(plugin)){
-                            api.remove(plugin);
-                            inventory.setItem(slotofitem+9, ItemButtonManager.DISABLED_EVENT);
-                        }
-                        else {
-                            api.add(plugin);
-                            inventory.setItem(slotofitem+9, ItemButtonManager.ENABLED_EVENT);
+                    if (clickeditem.getItemMeta().getDisplayName().equals(plugin.getDisplayStack().getItemMeta().getDisplayName()) && clickeditem.getType().equals(plugin.getDisplayStack().getType())){
+                        ItemStack comparableitem = addTitleLore(plugin.getDisplayStack());
+                        if (clickeditem.getItemMeta().getLore().contains(comparableitem.getItemMeta().getLore().get(0))){
+                            if (api.contains(plugin)){
+                                api.remove(plugin);
+                                inventory.setItem(slotofitem+9, ItemButtonManager.DISABLED_EVENT);
+                                player.playSound(player.getLocation(), Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 1, 0.5F);
+                            }
+                            else {
+                                api.add(plugin);
+                                inventory.setItem(slotofitem+9, ItemButtonManager.ENABLED_EVENT);
+                                player.playSound(player.getLocation(), Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 1, 1);
+                            }
                         }
                     }
                 }
                 if (clickeditem.isSimilar(ItemButtonManager.RETURN)){
-                    player.openInventory(GUIManager.makeStartSettingsGUI(player));
+                    player.openInventory(GUIManager.makeStartSettingsGUI(player, UHCAPI.isStarted));
                     plugin.isInGUI.put(player.getUniqueId(), true);
                 }
                 else if (clickeditem.isSimilar(ItemButtonManager.NEXT_PAGE)){
                     //if (maxpagespossible > 0){
                         int pagesstored = plugin.EventGUIPages.get(player.getUniqueId());
                         int pages = pagesstored + 1;
-                        if (pages > maxpagespossible){
-                            pages = maxpagespossible;
+                        if (plugin.isInCustomEventGUI.get(player.getUniqueId())){
+                            if (pages > maxpagespossible){
+                                pages = maxpagespossible;
+                            }
                         }
-                        player.openInventory(GUIManager.makeEventsGUI(player, pages, api));
+                        else if (plugin.isInEventGUI.get(player.getUniqueId())){
+                            if (pages > vanillalistsize){
+                                pages = vanillalistsize;
+                            }
+                        }
+                        if (plugin.isInCustomEventGUI.get(player.getUniqueId())){
+                            player.openInventory(GUIManager.makeCustomEventsGUI(player, pages, api));
+                            plugin.isInCustomEventGUI.put(player.getUniqueId(), true);
+                            player.playSound(player.getLocation(), Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 1, 1);
+                        }
+                        else if (plugin.isInEventGUI.get(player.getUniqueId())){
+                            player.openInventory(GUIManager.makeEventsGUI(player, pages, api));
+                            plugin.isInEventGUI.put(player.getUniqueId(), true);
+                            player.playSound(player.getLocation(), Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 1, 1);
+                        }
                         plugin.isInGUI.put(player.getUniqueId(), true);
                     //}
                 }
@@ -94,9 +116,36 @@ public class GUIListener implements Listener {
                         if (pages <= 0){
                             pages = 0;
                         }
-                        player.openInventory(GUIManager.makeEventsGUI(player, pages, api));
+                        if (plugin.isInCustomEventGUI.get(player.getUniqueId())){
+                            player.openInventory(GUIManager.makeCustomEventsGUI(player, pages, api));
+                            plugin.isInCustomEventGUI.put(player.getUniqueId(), true);
+                            player.playSound(player.getLocation(), Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 1, 0.5F);
+                        }
+                        else if (plugin.isInEventGUI.get(player.getUniqueId())){
+                            player.openInventory(GUIManager.makeEventsGUI(player, pages, api));
+                            plugin.isInEventGUI.put(player.getUniqueId(), true);
+                            player.playSound(player.getLocation(), Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 1, 0.5F);
+                        }
                         plugin.isInGUI.put(player.getUniqueId(), true);
                     //}
+                }
+                else if (clickeditem.isSimilar(ItemButtonManager.INSTALLED_EVENTS)){
+                    int pages = 0;
+                    plugin.EventGUIPages.put(player.getUniqueId(), 0);
+                    player.openInventory(GUIManager.makeCustomEventsGUI(player, pages, api));
+                    plugin.isInGUI.put(player.getUniqueId(), true);
+                    plugin.isInEventGUI.put(player.getUniqueId(), false);
+                    plugin.isInCustomEventGUI.put(player.getUniqueId(), true);
+                    player.playSound(player.getLocation(), Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 1, 1);
+                }
+                else if (clickeditem.isSimilar(ItemButtonManager.UHC_SETTINGS)){
+                    player.openInventory(GUIManager.makeUHCSettingsGUI(player));
+                    plugin.isInGUI.put(player.getUniqueId(), true);
+                }
+                else if (clickeditem.isSimilar(ItemButtonManager.TIMING_SETTINGS)){
+                    player.openInventory(GUIManager.makeTimingSettingsGUI(player));
+                    player.playSound(player.getLocation(), Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 1, 1F);
+                    plugin.isInGUI.put(player.getUniqueId(), true);
                 }
                 if (clickeditem.isSimilar(ItemButtonManager.START_UHC)){
                     if (api.size() > 0){
@@ -106,14 +155,23 @@ public class GUIListener implements Listener {
                         player.closeInventory();
                         player.sendMessage(ChatColor.GREEN+"All Selected events have started!");
                         player.playSound(player.getLocation(), Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 1, 1);
+                        UHCAPI.isStarted = true;
                     }
                     else {
-                        player.openInventory(GUIManager.makeStartSettingsGUI(player));
+                        player.openInventory(GUIManager.makeStartSettingsGUI(player, UHCAPI.isStarted));
                         player.sendMessage(ChatColor.RED+"No events to enable");
-                        player.playSound(player.getLocation(), Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 1, (float) 0.2);
                         plugin.isInGUI.put(player.getUniqueId(), true);
+                        player.closeInventory();
+                        player.playSound(player.getLocation(), Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 1, 1);
+                        UHCAPI.isStarted = true;
                     }
                     Bukkit.broadcastMessage(ChatColor.RED+"UHC Has Begun!");
+                }
+                else if (clickeditem.isSimilar(ItemButtonManager.END_UHC)){
+                    player.closeInventory();
+                    Bukkit.broadcastMessage(ChatColor.RED+"UHC has ended!");
+                    player.playSound(player.getLocation(), Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 1, 0.5F);
+                    UHCAPI.isStarted = false;
                 }
             }
         }
@@ -123,6 +181,7 @@ public class GUIListener implements Listener {
         Player p = (Player) e.getPlayer();
         plugin.isInGUI.put(p.getUniqueId(), false);
         plugin.isInEventGUI.put(p.getUniqueId(), false);
+        plugin.isInCustomEventGUI.put(p.getUniqueId(), false);
     }
     public static ItemStack addTitleLore(ItemStack item){
         ItemStack comparableitem = null;
