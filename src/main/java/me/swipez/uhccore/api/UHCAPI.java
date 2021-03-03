@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class UHCAPI {
+    public static boolean isStarted = false;
     public static List<UHCPlugin> pluginList = new ArrayList<>();
     public static void registerPlugin(UHCPlugin p) {
         pluginList.add(p);
