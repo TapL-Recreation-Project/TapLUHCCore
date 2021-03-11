@@ -2,11 +2,10 @@ package me.swipez.uhccore;
 
 import me.swipez.uhccore.api.UHCAPI;
 import me.swipez.uhccore.api.UHCPlugin;
+import me.swipez.uhccore.customevents.BuiltInEvents;
 import me.swipez.uhccore.guis.GUIManager;
 import me.swipez.uhccore.itembuttons.ItemButtonManager;
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
-import org.bukkit.Sound;
+import org.bukkit.*;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -148,6 +147,7 @@ public class GUIListener implements Listener {
                     plugin.isInGUI.put(player.getUniqueId(), true);
                 }
                 if (clickeditem.isSimilar(ItemButtonManager.START_UHC)){
+
                     if (api.size() > 0){
                         for (UHCPlugin uhcPlugin : api) {
                             uhcPlugin.start();
@@ -165,6 +165,20 @@ public class GUIListener implements Listener {
                         player.playSound(player.getLocation(), Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 1, 1);
                         UHCAPI.isStarted = true;
                     }
+                    if (BuiltInEvents.ALWAYS_DAY) {
+                        for (World world : Bukkit.getWorlds()) {
+                            Bukkit.broadcastMessage("Inside world loop for day");
+                            world.setGameRule(GameRule.DO_DAYLIGHT_CYCLE, false);
+                            world.setTime(1000l);
+                        }
+                    } else if (BuiltInEvents.ALWAYS_NIGHT) {
+                        for (World world : Bukkit.getWorlds()) {
+                            Bukkit.broadcastMessage("Inside world loop for night");
+
+                            world.setGameRule(GameRule.DO_DAYLIGHT_CYCLE, false);
+                            world.setTime(13000l);
+                        }
+                    }
                     Bukkit.broadcastMessage(ChatColor.RED+"UHC Has Begun!");
                 }
                 else if (clickeditem.isSimilar(ItemButtonManager.END_UHC)){
@@ -172,6 +186,11 @@ public class GUIListener implements Listener {
                     Bukkit.broadcastMessage(ChatColor.RED+"UHC has ended!");
                     player.playSound(player.getLocation(), Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 1, 0.5F);
                     UHCAPI.isStarted = false;
+
+                    for (World world : Bukkit.getWorlds()) {
+                        world.setGameRule(GameRule.DO_DAYLIGHT_CYCLE, true);
+                    }
+
                 }
             }
         }
