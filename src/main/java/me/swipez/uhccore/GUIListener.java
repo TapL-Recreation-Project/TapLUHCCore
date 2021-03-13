@@ -1,12 +1,13 @@
 package me.swipez.uhccore;
 
+import jdk.internal.org.jline.utils.DiffHelper;
 import me.swipez.uhccore.api.UHCAPI;
 import me.swipez.uhccore.api.UHCPlugin;
 import me.swipez.uhccore.customevents.BuiltInEvents;
 import me.swipez.uhccore.guis.GUIManager;
 import me.swipez.uhccore.itembuttons.ItemButtonManager;
 import org.bukkit.*;
-import org.bukkit.entity.Player;
+import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
