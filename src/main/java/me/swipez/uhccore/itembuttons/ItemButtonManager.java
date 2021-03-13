@@ -61,4 +61,7 @@ public class ItemButtonManager {
     public static final ItemStack MEETUP = ItemBuilder.of(Material.CLOCK)
             .name(ChatColor.YELLOW+"MEETUP")
             .build();
+    public static final ItemStack TIME_DISPLAY = ItemBuilder.of(Material.CLOCK)
+            .name(ChatColor.BLUE+"[]")
+            .build();
 }

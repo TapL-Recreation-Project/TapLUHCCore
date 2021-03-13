@@ -9,10 +9,10 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-public class UHCCommand implements CommandExecutor {
+public class UHCGUICommand implements CommandExecutor {
     UHCCore plugin;
 
-    public UHCCommand(UHCCore plugin) {
+    public UHCGUICommand(UHCCore plugin) {
         this.plugin = plugin;
     }
 

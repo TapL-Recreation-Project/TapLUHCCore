@@ -3,6 +3,7 @@ package me.swipez.uhccore.guis;
 import me.swipez.uhccore.UHCCore;
 import me.swipez.uhccore.api.UHCAPI;
 import me.swipez.uhccore.api.UHCPlugin;
+import me.swipez.uhccore.customevents.BuiltInEvents;
 import me.swipez.uhccore.itembuttons.ItemButtonManager;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -12,10 +13,7 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class GUIManager {
 
@@ -54,7 +52,7 @@ public class GUIManager {
 
     public static Inventory makeEventsGUI(Player p, Integer page, List<UHCPlugin> list) {
         Inventory inventory = Bukkit.createInventory(p, 27, "UHC Events Menu");
-        DisplayProperly(inventory, list);
+        DisplayVanillaEvents(inventory, BuiltInEvents.customEventsBooleans);
         inventory.setItem(26, ItemButtonManager.RETURN);
         inventory.setItem(25, ItemButtonManager.NEXT_PAGE);
         inventory.setItem(24, ItemButtonManager.PREVIOUS_PAGE);
@@ -89,6 +87,7 @@ public class GUIManager {
         }
         return inventory;
     }
+
 
     public static Inventory getPluginSelectorInventory(Inventory inventory, Integer page) {
         int pagestarter = page * 9;
@@ -129,6 +128,20 @@ public class GUIManager {
                         }
                     }
             }
+        }
+        return inventory;
+    }
+    public static Inventory DisplayVanillaEvents(Inventory inventory, Map<ItemStack, Boolean> items){
+        int slot = 0;
+        for (Map.Entry<ItemStack, Boolean> entry : items.entrySet()) {
+            inventory.addItem(entry.getKey());
+            if (entry.getValue()){
+                inventory.setItem(slot+9, ItemButtonManager.ENABLED_EVENT);
+            }
+            else {
+                inventory.setItem(slot+9, ItemButtonManager.DISABLED_EVENT);
+            }
+            slot++;
         }
         return inventory;
     }
