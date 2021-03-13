@@ -29,16 +29,17 @@ public final class UHCCore extends JavaPlugin {
     public HashMap<UUID, Integer> timeEdited = new HashMap<>();
 
     // Stage times
-    public int invincibility;
-    public int finalheal;
-    public int pvpenable;
-    public int bordershrink;
-    public int meetup;
-    public int borderdivide;
+    public static int invincibility;
+    public static int finalheal;
+    public static int pvpenable;
+    public static int bordershrink;
+    public static int meetup;
+    public static int borderdivide;
 
     //Border sizes
-    public int bordersize;
-    public int meetupborder;
+    public static int initialborder;
+    public static int bordersize;
+    public static int meetupborder;
 
 
 
@@ -67,14 +68,15 @@ public final class UHCCore extends JavaPlugin {
         UHCAPI.pluginList.clear();
     }
 
-    public void Init(){
+    public static void Init(){
         invincibility = 30;
         finalheal = 60;
         pvpenable = 1200;
         bordershrink = 1800;
         meetup = 2100;
-        borderdivide = 180;
+        borderdivide = 120;
 
+        initialborder = 2000;
         bordersize = 1000;
         meetupborder = 500;
     }

@@ -30,6 +30,7 @@ public class DeathListener implements Listener {
                     if (others.getGameMode().equals(GameMode.SURVIVAL)){
                         Bukkit.broadcastMessage(ChatColor.GREEN+"The winner of the UHC is "+others.getDisplayName());
                         UHCAPI.isStarted = false;
+                        UHCCore.Init();
                         plugin.meetupdone = false;
                         for (World world : Bukkit.getWorlds()) {
                             world.setGameRule(GameRule.DO_DAYLIGHT_CYCLE, true);

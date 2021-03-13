@@ -18,20 +18,37 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
 
+import java.util.HashMap;
+import java.util.Map;
+import me.swipez.uhccore.utils.ItemBuilder;
 import java.util.Locale;
 
 public class BuiltInEvents implements Listener {
-    public static boolean CUT_CLEAN = true;
-    public static boolean TIMBER = true;
-    public static boolean VEINMINER = false;
-    public static boolean COOKED_MEAT = true;
-    public static boolean ALWAYS_DAY = true;
-    public static boolean ALWAYS_NIGHT = false;
 
+
+    public static ItemStack CUT_CLEAN = ItemBuilder.of(Material.IRON_INGOT, 1).name(ChatColor.GOLD+"Cutclean").build();
+    public static ItemStack TIMBER = ItemBuilder.of(Material.DIAMOND_AXE, 1).name(ChatColor.BLUE+"Timber").build();
+    public static ItemStack VEINMINER = ItemBuilder.of(Material.GOLDEN_PICKAXE, 1).name(ChatColor.WHITE+"Veinminer").build();
+    public static ItemStack COOKED_MEAT = ItemBuilder.of(Material.COOKED_BEEF, 1).name(ChatColor.RED+"Cooked meat").build();
+    public static ItemStack ALWAYS_DAY = ItemBuilder.of(Material.CLOCK, 1).name(ChatColor.YELLOW+"Always day").build();
+    public static ItemStack HOSTILE_MOBS = ItemBuilder.of(Material.ZOMBIE_HEAD, 1).name(ChatColor.RED+"Hostile mobs").build();
+    public static ItemStack LOSE_HUNGER = ItemBuilder.of(Material.POISONOUS_POTATO, 1).name(ChatColor.GREEN+"Lose hunger").build();
+    public static ItemStack DO_WEATHER = ItemBuilder.of(Material.WATER_BUCKET, 1).name(ChatColor.DARK_PURPLE+"Always clear weather").build();
+    public static Map<ItemStack, Boolean> customEventsBooleans = new HashMap<>();
+    static {
+        customEventsBooleans.put(CUT_CLEAN, true);
+        customEventsBooleans.put(TIMBER, true);
+        customEventsBooleans.put(VEINMINER, false);
+        customEventsBooleans.put(COOKED_MEAT, false);
+        customEventsBooleans.put(ALWAYS_DAY, true);
+        customEventsBooleans.put(HOSTILE_MOBS, false);
+        customEventsBooleans.put(LOSE_HUNGER, false);
+        customEventsBooleans.put(DO_WEATHER, false);
+    }
 
     @EventHandler
     public void onBreak(BlockBreakEvent e) {
-        if (TIMBER && UHCAPI.isStarted && (e.getBlock().getType().toString().toLowerCase().contains("_log"))) {
+        if (customEventsBooleans.get(TIMBER) && UHCAPI.isStarted && (e.getBlock().getType().toString().toLowerCase().contains("_log"))) {
             Material heldMaterial = e.getPlayer().getInventory().getItemInMainHand().getType();
             Material brokenMaterial = e.getBlock().getType();
             if (heldMaterial.toString().toLowerCase().contains("_axe")
@@ -39,15 +56,15 @@ public class BuiltInEvents implements Listener {
                 breakAdjacentWood(e.getBlock().getLocation(), e.getBlock().getType(), false);
             }
         }
-        if (VEINMINER && UHCAPI.isStarted && e.getBlock().getType().toString().toLowerCase().contains("_ore") && e.getPlayer().getInventory().getItemInMainHand().getType().toString().toLowerCase().contains("_pickaxe")) {
+        if (customEventsBooleans.get(VEINMINER) && UHCAPI.isStarted && e.getBlock().getType().toString().toLowerCase().contains("_ore") && e.getPlayer().getInventory().getItemInMainHand().getType().toString().toLowerCase().contains("_pickaxe")) {
             if (e.getBlock().getType().equals(Material.IRON_ORE) || (e.getBlock().getType().equals(Material.GOLD_ORE) && !e.getPlayer().getInventory().getItemInMainHand().getType().toString().toLowerCase().contains("stone_"))) {
                 e.setDropItems(false);
-                breakAdjacentWood(e.getBlock().getLocation(), e.getBlock().getType(), CUT_CLEAN);
+                breakAdjacentWood(e.getBlock().getLocation(), e.getBlock().getType(), customEventsBooleans.get(CUT_CLEAN));
             } else {
                 breakAdjacentWood(e.getBlock().getLocation(), e.getBlock().getType(), false);
             }
         }
-        if (CUT_CLEAN && UHCAPI.isStarted && e.getBlock().getType().toString().toLowerCase().contains("_ore") && e.getPlayer().getInventory().getItemInMainHand().getType().toString().toLowerCase().contains("_pickaxe") && !e.getPlayer().getInventory().getItemInMainHand().getType().toString().toLowerCase().contains("wooden_")) {
+        if (customEventsBooleans.get(CUT_CLEAN) && UHCAPI.isStarted && e.getBlock().getType().toString().toLowerCase().contains("_ore") && e.getPlayer().getInventory().getItemInMainHand().getType().toString().toLowerCase().contains("_pickaxe") && !e.getPlayer().getInventory().getItemInMainHand().getType().toString().toLowerCase().contains("wooden_")) {
             if (e.getBlock().getType().equals(Material.IRON_ORE)) {
                 e.setDropItems(false);
                 dropCutClean(e.getBlock());
@@ -91,7 +108,7 @@ public class BuiltInEvents implements Listener {
 
     @EventHandler
     public void onDeath(EntityDeathEvent e) {
-        if (e.getEntity().getLastDamageCause().getCause().equals(EntityDamageEvent.DamageCause.ENTITY_ATTACK) && UHCAPI.isStarted && COOKED_MEAT) {
+        if (e.getEntity().getLastDamageCause().getCause().equals(EntityDamageEvent.DamageCause.ENTITY_ATTACK) && UHCAPI.isStarted && customEventsBooleans.get(COOKED_MEAT) && e.getEntity().getLastDamageCause() != null) {
             for (ItemStack i : e.getDrops()) {
                 if (i.getType().equals(Material.BEEF)) i.setType(Material.COOKED_BEEF);
                 if (i.getType().equals(Material.RABBIT)) i.setType(Material.COOKED_RABBIT);
@@ -99,6 +116,7 @@ public class BuiltInEvents implements Listener {
                 if (i.getType().equals(Material.MUTTON)) i.setType(Material.COOKED_MUTTON);
                 if (i.getType().equals(Material.COD)) i.setType(Material.COOKED_COD);
                 if (i.getType().equals(Material.SALMON)) i.setType(Material.COOKED_SALMON);
+                if (i.getType().equals(Material.CHICKEN)) i.setType(Material.COOKED_CHICKEN);
             }
         }
     }

@@ -56,10 +56,31 @@ public class ChatEditListener implements Listener {
                         plugin.isInGUI.put(uuid, true);
                         break;
                     case 5:
-                        plugin.meetup = Integer.parseInt(event.getMessage()) * 60;
+                        plugin.meetup = Integer.parseInt(event.getMessage())*60;
                         plugin.timeEdited.remove(uuid);
                         event.getPlayer().openInventory(GUIManager.makeTimingSettingsGUI(event.getPlayer()));
                         event.getPlayer().sendMessage(ChatColor.GOLD + "Meetup period is now set to " + event.getMessage() + " minutes");
+                        plugin.isInGUI.put(uuid, true);
+                        break;
+                    case 6:
+                        plugin.initialborder = Integer.parseInt(event.getMessage());
+                        plugin.timeEdited.remove(uuid);
+                        event.getPlayer().openInventory(GUIManager.makeBorderSettingsGUI(event.getPlayer()));
+                        event.getPlayer().sendMessage(ChatColor.GOLD + "Initial border size is now set to " + event.getMessage());
+                        plugin.isInGUI.put(uuid, true);
+                        break;
+                    case 7:
+                        plugin.bordersize = Integer.parseInt(event.getMessage());
+                        plugin.timeEdited.remove(uuid);
+                        event.getPlayer().openInventory(GUIManager.makeBorderSettingsGUI(event.getPlayer()));
+                        event.getPlayer().sendMessage(ChatColor.GOLD + "Border shrink size is now set to " + event.getMessage());
+                        plugin.isInGUI.put(uuid, true);
+                        break;
+                    case 8:
+                        plugin.meetupborder = Integer.parseInt(event.getMessage());
+                        plugin.timeEdited.remove(uuid);
+                        event.getPlayer().openInventory(GUIManager.makeBorderSettingsGUI(event.getPlayer()));
+                        event.getPlayer().sendMessage(ChatColor.GOLD + "Meetup border size is now set to " + event.getMessage());
                         plugin.isInGUI.put(uuid, true);
                         break;
                 }

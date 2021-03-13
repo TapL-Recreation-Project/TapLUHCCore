@@ -40,7 +40,7 @@ public class ItemButtonManager {
     public static final ItemStack UHC_SETTINGS = ItemBuilder.of(Material.IRON_BLOCK)
             .name(ChatColor.GOLD+"UHC SETTINGS")
             .build();
-    public static final ItemStack BORDER_SETTINGS = ItemBuilder.of(Material.BARRIER)
+    public static final ItemStack BORDER_SETTINGS = ItemBuilder.of(Material.STRUCTURE_VOID)
             .name(ChatColor.YELLOW+"BORDER SETTINGS")
             .build();
     public static final ItemStack TIMING_SETTINGS = ItemBuilder.of(Material.CLOCK)
@@ -61,7 +61,13 @@ public class ItemButtonManager {
     public static final ItemStack MEETUP = ItemBuilder.of(Material.CLOCK)
             .name(ChatColor.YELLOW+"MEETUP")
             .build();
-    public static final ItemStack TIME_DISPLAY = ItemBuilder.of(Material.CLOCK)
-            .name(ChatColor.BLUE+"[]")
+    public static final ItemStack INITIAL_BORDER = ItemBuilder.of(Material.STRUCTURE_VOID)
+            .name(ChatColor.RED+"INITIAL BORDER")
+            .build();
+    public static final ItemStack BORDER_SHRINK = ItemBuilder.of(Material.STRUCTURE_VOID)
+            .name(ChatColor.RED+"BORDER SHRINK BORDER")
+            .build();
+    public static final ItemStack MEETUP_BORDER = ItemBuilder.of(Material.STRUCTURE_VOID)
+            .name(ChatColor.RED+"MEETUP BORDER")
             .build();
 }

@@ -24,13 +24,14 @@ public class BorderDivide extends BukkitRunnable {
                 if (plugin.borderdivide > 0) {
                     plugin.borderdivide--;
                     for (Player others : Bukkit.getOnlinePlayers()) {
-                        SendTitleBarMessage.sendMessage(others, ChatColor.GOLD + "Border Divide " + others.getWorld().getWorldBorder().getSize() / 2 + "x" + others.getWorld().getWorldBorder().getSize() / 2, plugin.borderdivide);
+                        SendTitleBarMessage.sendMessage(others, ChatColor.GOLD + "Border Divide " + (others.getWorld().getWorldBorder().getSize() / 2)/2 + "x" + (others.getWorld().getWorldBorder().getSize() / 2)/2, plugin.borderdivide);
                     }
                 }
-            } else if (plugin.borderdivide == 0) {
-                plugin.borderdivide = 180;
-                for (World world : Bukkit.getWorlds()) {
-                    world.getWorldBorder().setSize(world.getWorldBorder().getSize() / 2);
+                else if (plugin.borderdivide == 0) {
+                    plugin.borderdivide = 120;
+                    for (World world : Bukkit.getWorlds()) {
+                        world.getWorldBorder().setSize(world.getWorldBorder().getSize() / 2);
+                    }
                 }
             }
         }

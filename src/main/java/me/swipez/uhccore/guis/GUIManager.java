@@ -38,7 +38,18 @@ public class GUIManager {
         inventory.setItem(13, ItemButtonManager.PVP);
         inventory.setItem(14, ItemButtonManager.BORDER);
         inventory.setItem(15, ItemButtonManager.MEETUP);
-        InventoryFill(inventory, Material.GREEN_STAINED_GLASS_PANE, ChatColor.RED + " ");
+        inventory.setItem(22, ItemButtonManager.RETURN);
+        InventoryFill(inventory, Material.BLUE_STAINED_GLASS_PANE, ChatColor.RED + " ");
+        return inventory;
+    }
+
+    public static Inventory makeBorderSettingsGUI(Player p) {
+        Inventory inventory = Bukkit.createInventory(p, 27, "UHC Border Settings Menu");
+        inventory.setItem(12, ItemButtonManager.INITIAL_BORDER);
+        inventory.setItem(13, ItemButtonManager.BORDER_SHRINK);
+        inventory.setItem(14, ItemButtonManager.MEETUP_BORDER);
+        inventory.setItem(22, ItemButtonManager.RETURN);
+        InventoryFill(inventory, Material.BLUE_STAINED_GLASS_PANE, ChatColor.RED + " ");
         return inventory;
     }
 
@@ -112,7 +123,6 @@ public class GUIManager {
                 }
             }
         }
-
         return inventory;
     }
 

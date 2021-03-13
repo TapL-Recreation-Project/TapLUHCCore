@@ -1,12 +1,13 @@
 package me.swipez.uhccore;
 
+import jdk.internal.org.jline.utils.DiffHelper;
 import me.swipez.uhccore.api.UHCAPI;
 import me.swipez.uhccore.api.UHCPlugin;
 import me.swipez.uhccore.customevents.BuiltInEvents;
 import me.swipez.uhccore.guis.GUIManager;
 import me.swipez.uhccore.itembuttons.ItemButtonManager;
 import org.bukkit.*;
-import org.bukkit.entity.Player;
+import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
@@ -29,19 +30,9 @@ public class GUIListener implements Listener {
     }
     List<UHCPlugin> api = new ArrayList<>();
 
-    // Stage times
-    List<Integer> times = new ArrayList<>();
-    public int invincibility = 30;
-    public int finalheal = 60;
-    public int pvpenable = 1200;
-    public int bordershrink = 1800;
-    public int meetup = 2100;
     public Difficulty STORED_DIFFICULTY;
     public boolean STORED_WEATHER;
     //Border sizes
-    public int initialborder = 2000;
-    public int bordersize = 1000;
-    public int meetupborder = 500;
 
     @EventHandler
     public void onPlayerOpenGUI(InventoryClickEvent e) {
@@ -96,13 +87,12 @@ public class GUIListener implements Listener {
                         if (entry.getValue()){
                             entry.setValue(false);
                             inventory.setItem(slotofitem+9, ItemButtonManager.DISABLED_EVENT);
-                            player.playSound(player.getLocation(), Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 1, 1);
                         }
                         else {
                             entry.setValue(true);
                             inventory.setItem(slotofitem+9, ItemButtonManager.ENABLED_EVENT);
-                            player.playSound(player.getLocation(), Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 1, 1);
                         }
+                        player.playSound(player.getLocation(), Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 1, 1);
                     }
                 }
                 if (clickeditem.isSimilar(ItemButtonManager.RETURN)) {
@@ -161,8 +151,14 @@ public class GUIListener implements Listener {
                 } else if (clickeditem.isSimilar(ItemButtonManager.UHC_SETTINGS)) {
                     player.openInventory(GUIManager.makeUHCSettingsGUI(player));
                     plugin.isInGUI.put(player.getUniqueId(), true);
+                    player.playSound(player.getLocation(), Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 1, 1F);
                 } else if (clickeditem.isSimilar(ItemButtonManager.TIMING_SETTINGS)) {
                     player.openInventory(GUIManager.makeTimingSettingsGUI(player));
+                    player.playSound(player.getLocation(), Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 1, 1F);
+                    plugin.isInGUI.put(player.getUniqueId(), true);
+                }
+                else if (clickeditem.isSimilar(ItemButtonManager.BORDER_SETTINGS)) {
+                    player.openInventory(GUIManager.makeBorderSettingsGUI(player));
                     player.playSound(player.getLocation(), Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 1, 1F);
                     plugin.isInGUI.put(player.getUniqueId(), true);
                 }
@@ -176,7 +172,7 @@ public class GUIListener implements Listener {
                         plugin.isInGUI.put(player.getUniqueId(), true);
                     }
                     for (World world : Bukkit.getWorlds()) {
-                        world.getWorldBorder().setSize(initialborder * 2);
+                        world.getWorldBorder().setSize(plugin.initialborder * 2);
                         world.setGameRule(GameRule.NATURAL_REGENERATION, false);
                         world.setGameRule(GameRule.DO_IMMEDIATE_RESPAWN, true);
                     }
@@ -185,8 +181,8 @@ public class GUIListener implements Listener {
                         others.setInvulnerable(true);
 
                         Random random = new Random();
-                        double randomx = random.nextInt(initialborder / 2);
-                        double randomz = random.nextInt(initialborder / 2);
+                        double randomx = random.nextInt(plugin.initialborder / 2);
+                        double randomz = random.nextInt(plugin.initialborder / 2);
                         int coinflipx = (int) (Math.random() * 100);
                         int coinflipz = (int) (Math.random() * 100);
                         if (coinflipx < 50) {
@@ -222,8 +218,6 @@ public class GUIListener implements Listener {
                         world.setGameRule(GameRule.DO_WEATHER_CYCLE, BuiltInEvents.customEventsBooleans.get(BuiltInEvents.DO_WEATHER));
                         world.setClearWeatherDuration(100000000);
                     }
-
-
                     player.closeInventory();
                     player.playSound(player.getLocation(), Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 1, 1);
                 }
@@ -252,12 +246,29 @@ public class GUIListener implements Listener {
                     plugin.timeEdited.put(player.getUniqueId(), 5);
                     player.closeInventory();
                     player.sendMessage(ChatColor.GOLD + "How far into the game should the meetup be? (In Minutes)");
-                } else if (clickeditem.isSimilar(ItemButtonManager.END_UHC)) {
+                }
+                if (clickeditem.isSimilar(ItemButtonManager.INITIAL_BORDER)) {
+                    plugin.timeEdited.put(player.getUniqueId(), 6);
+                    player.closeInventory();
+                    player.sendMessage(ChatColor.GOLD + "What should the radius of the initial border be?");
+                }
+                if (clickeditem.isSimilar(ItemButtonManager.BORDER_SHRINK)) {
+                    plugin.timeEdited.put(player.getUniqueId(), 7);
+                    player.closeInventory();
+                    player.sendMessage(ChatColor.GOLD + "What should the radius of the border shrink border be?");
+                }
+                if (clickeditem.isSimilar(ItemButtonManager.MEETUP_BORDER)) {
+                    plugin.timeEdited.put(player.getUniqueId(), 8);
+                    player.closeInventory();
+                    player.sendMessage(ChatColor.GOLD + "What should the radius of the meetup border be?");
+                }
+                else if (clickeditem.isSimilar(ItemButtonManager.END_UHC)) {
                     player.closeInventory();
                     Bukkit.broadcastMessage(ChatColor.RED + "UHC has ended!");
                     player.playSound(player.getLocation(), Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 1, 0.5F);
                     UHCAPI.isStarted = false;
                     plugin.meetupdone = false;
+                    UHCCore.Init();
                     for (World world : Bukkit.getWorlds()) {
                         world.setGameRule(GameRule.DO_DAYLIGHT_CYCLE, true);
                         world.getWorldBorder().setSize(29999984);
@@ -270,7 +281,6 @@ public class GUIListener implements Listener {
                         others.setInvulnerable(false);
                     }
                 }
-
             }
         }
     }
