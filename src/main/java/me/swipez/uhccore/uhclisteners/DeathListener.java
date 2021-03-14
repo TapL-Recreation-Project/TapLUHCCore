@@ -29,12 +29,14 @@ public class DeathListener implements Listener {
         if (UHCAPI.isStarted){
             Player player = event.getEntity();
             Location location = player.getLocation();
-            player.getWorld().strikeLightning(location);
+            player.getWorld().strikeLightningEffect(location);
             if (player.getKiller() != null){
                 Player killer = player.getKiller();
-                killer.getInventory().addItem(ItemButtonManager.getGoldenHead().clone());
+                player.getWorld().dropItem(location, ItemButtonManager.getGoldenHead().clone());
                 Bukkit.broadcastMessage(ChatColor.RED + player.getDisplayName() + " died by the hands of " + killer.getDisplayName());
             }
+            UHCAPI.deadPlayers.add(player);
+            UHCAPI.livingPlayers.remove(player);
         }
     }
     @EventHandler

@@ -35,5 +35,7 @@ public class UHCStop {
                 others.setGameMode(GameMode.SURVIVAL);
             }
         }
+        UHCAPI.livingPlayers.clear();
+        UHCAPI.deadPlayers.clear();
     }
 }

@@ -204,6 +204,7 @@ public class GUIListener implements Listener {
                         others.sendMessage(ChatColor.RED + "UHC has started!");
                         others.getInventory().clear();
                         others.setGameMode(GameMode.SURVIVAL);
+                        UHCAPI.livingPlayers.add(others);
                     }
                     UHCAPI.isStarted = true;
                     if (BuiltInEvents.customEventsBooleans.get(BuiltInEvents.ALWAYS_DAY)) {

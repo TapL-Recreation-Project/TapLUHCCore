@@ -10,6 +10,7 @@ import me.swipez.uhccore.runnables.TimeDecrease;
 import me.swipez.uhccore.runnables.TimeRunOut;
 import me.swipez.uhccore.uhclisteners.ChatEditListener;
 import me.swipez.uhccore.uhclisteners.DeathListener;
+import me.swipez.uhccore.uhclisteners.JoinListener;
 import me.swipez.uhccore.uhclisteners.PVPStop;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -27,6 +28,7 @@ public final class UHCCore extends JavaPlugin {
 
     public static boolean meetupdone = false;
     public static Metrics metrics;
+    public static UHCCore plugin;
 
     // GUI Hashmaps
     public HashMap<UUID, Boolean> isInGUI = new HashMap<>();
@@ -59,7 +61,7 @@ public final class UHCCore extends JavaPlugin {
 
     @Override
     public void onEnable() {
-
+        plugin = this;
 
 
 
@@ -72,6 +74,7 @@ public final class UHCCore extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new PVPStop(this), this);
         getServer().getPluginManager().registerEvents(new ChatEditListener(this), this);
         getServer().getPluginManager().registerEvents(new DeathListener(this), this);
+        getServer().getPluginManager().registerEvents(new JoinListener(), this);
 
         //Runnables
         BukkitTask TimeDecrease = new TimeDecrease(this).runTaskTimer(this, 20, 20);
