@@ -57,6 +57,7 @@ public class GUIManager {
         Inventory inventory = Bukkit.createInventory(p, 27, "UHC Settings Menu");
         inventory.setItem(11, ItemButtonManager.TIMING_SETTINGS);
         inventory.setItem(15, ItemButtonManager.BORDER_SETTINGS);
+        inventory.setItem(22, ItemButtonManager.RETURN);
         InventoryFill(inventory, Material.GREEN_STAINED_GLASS_PANE, ChatColor.RED + " ");
         return inventory;
     }
