@@ -1,17 +1,10 @@
 package me.swipez.uhccore.itembuttons;
 
-import me.swipez.uhccore.UHCCore;
 import me.swipez.uhccore.utils.ItemBuilder;
-import org.bukkit.*;
-
-import org.bukkit.block.Skull;
-import org.bukkit.entity.Player;
+import org.bukkit.ChatColor;
+import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.RecipeChoice;
-import org.bukkit.inventory.ShapedRecipe;
 import org.bukkit.inventory.meta.SkullMeta;
-
-import java.lang.reflect.Field;
 
 public class ItemButtonManager {
 

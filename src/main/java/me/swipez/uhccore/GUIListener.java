@@ -1,6 +1,5 @@
 package me.swipez.uhccore;
 
-import jdk.internal.org.jline.utils.DiffHelper;
 import me.swipez.uhccore.api.UHCAPI;
 import me.swipez.uhccore.api.UHCPlugin;
 import me.swipez.uhccore.bstats.Metrics;
@@ -8,9 +7,16 @@ import me.swipez.uhccore.customevents.BuiltInEvents;
 import me.swipez.uhccore.guis.GUIManager;
 import me.swipez.uhccore.itembuttons.ItemButtonManager;
 import me.swipez.uhccore.uhclisteners.UHCStop;
-import org.bukkit.*;
+import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
+import org.bukkit.Difficulty;
+import org.bukkit.GameMode;
+import org.bukkit.GameRule;
+import org.bukkit.Location;
+import org.bukkit.Sound;
+import org.bukkit.World;
 import org.bukkit.attribute.Attribute;
-import org.bukkit.entity.*;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
