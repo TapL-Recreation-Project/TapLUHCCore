@@ -237,7 +237,7 @@ public class GUIListener implements Listener {
                 if (clickeditem.isSimilar(ItemButtonManager.FINAL_HEAL)) {
                     plugin.timeEdited.put(player.getUniqueId(), 2);
                     player.closeInventory();
-                    player.sendMessage(ChatColor.GOLD + "How much time after invincibility period ends should the final heal be? (In Seconds), type x to go back");
+                    player.sendMessage(ChatColor.GOLD + "How far into the game should the final heal be? (In Seconds), type x to go back");
                     player.sendMessage(ChatColor.GOLD + "Currently is " + plugin.finalheal);
                 } else
                 if (clickeditem.isSimilar(ItemButtonManager.PVP)) {
