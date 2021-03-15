@@ -3,10 +3,13 @@ package me.swipez.uhccore;
 import jdk.internal.org.jline.utils.DiffHelper;
 import me.swipez.uhccore.api.UHCAPI;
 import me.swipez.uhccore.api.UHCPlugin;
+import me.swipez.uhccore.bstats.Metrics;
 import me.swipez.uhccore.customevents.BuiltInEvents;
 import me.swipez.uhccore.guis.GUIManager;
 import me.swipez.uhccore.itembuttons.ItemButtonManager;
+import me.swipez.uhccore.uhclisteners.UHCStop;
 import org.bukkit.*;
+import org.bukkit.attribute.Attribute;
 import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -30,9 +33,8 @@ public class GUIListener implements Listener {
     }
     List<UHCPlugin> api = new ArrayList<>();
 
-    public Difficulty STORED_DIFFICULTY;
-    public boolean STORED_WEATHER;
-    //Border sizes
+    public static Difficulty STORED_DIFFICULTY;
+    public static boolean STORED_WEATHER;
 
     @EventHandler
     public void onPlayerOpenGUI(InventoryClickEvent e) {
@@ -156,13 +158,11 @@ public class GUIListener implements Listener {
                     player.openInventory(GUIManager.makeTimingSettingsGUI(player));
                     player.playSound(player.getLocation(), Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 1, 1F);
                     plugin.isInGUI.put(player.getUniqueId(), true);
-                }
-                else if (clickeditem.isSimilar(ItemButtonManager.BORDER_SETTINGS)) {
+                } else if (clickeditem.isSimilar(ItemButtonManager.BORDER_SETTINGS)) {
                     player.openInventory(GUIManager.makeBorderSettingsGUI(player));
                     player.playSound(player.getLocation(), Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 1, 1F);
                     plugin.isInGUI.put(player.getUniqueId(), true);
-                }
-                if (clickeditem.isSimilar(ItemButtonManager.START_UHC)) {
+                } else if (clickeditem.isSimilar(ItemButtonManager.START_UHC)) {
                     if (api.size() > 0) {
                         for (UHCPlugin uhcPlugin : api) {
                             uhcPlugin.start();
@@ -171,6 +171,8 @@ public class GUIListener implements Listener {
                         player.openInventory(GUIManager.makeStartSettingsGUI(player, UHCAPI.isStarted));
                         plugin.isInGUI.put(player.getUniqueId(), true);
                     }
+                    Metrics metrics = new Metrics(plugin, 10659);
+                    metrics.addCustomChart(new Metrics.SimplePie("noup", () -> "" + api.size()));
                     for (World world : Bukkit.getWorlds()) {
                         world.getWorldBorder().setSize(plugin.initialborder * 2);
                         world.setGameRule(GameRule.NATURAL_REGENERATION, false);
@@ -179,6 +181,8 @@ public class GUIListener implements Listener {
                     for (Player others : Bukkit.getOnlinePlayers()) {
 
                         others.setInvulnerable(true);
+                        others.setHealth(others.getAttribute(Attribute.GENERIC_MAX_HEALTH).getBaseValue());
+                        others.setFoodLevel(20);
 
                         Random random = new Random();
                         double randomx = random.nextInt(plugin.initialborder / 2);
@@ -198,11 +202,13 @@ public class GUIListener implements Listener {
                         teleportloc.setY(y);
                         others.teleport(teleportloc);
                         others.sendMessage(ChatColor.RED + "UHC has started!");
+                        others.getInventory().clear();
+                        others.setGameMode(GameMode.SURVIVAL);
+                        UHCAPI.livingPlayers.add(others);
                     }
                     UHCAPI.isStarted = true;
                     if (BuiltInEvents.customEventsBooleans.get(BuiltInEvents.ALWAYS_DAY)) {
                         for (World world : Bukkit.getWorlds()) {
-                            Bukkit.broadcastMessage("Inside world loop for day");
                             world.setGameRule(GameRule.DO_DAYLIGHT_CYCLE, false);
                             world.setTime(1000l);
                         }
@@ -220,66 +226,60 @@ public class GUIListener implements Listener {
                     }
                     player.closeInventory();
                     player.playSound(player.getLocation(), Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 1, 1);
-                }
+                } else
 
                 if (clickeditem.isSimilar(ItemButtonManager.GRACE_PERIOD)) {
                     plugin.timeEdited.put(player.getUniqueId(), 1);
                     player.closeInventory();
-                    player.sendMessage(ChatColor.GOLD + "How long to do you want the invincibility period to last for? (In Seconds)");
-                }
+                    player.sendMessage(ChatColor.GOLD + "How long to do you want the invincibility period to last for? (In Seconds), type x to go back");
+                    player.sendMessage(ChatColor.GOLD + "Currently is " + plugin.invincibility);
+                } else
                 if (clickeditem.isSimilar(ItemButtonManager.FINAL_HEAL)) {
                     plugin.timeEdited.put(player.getUniqueId(), 2);
                     player.closeInventory();
-                    player.sendMessage(ChatColor.GOLD + "How far into the game should the final heal be? (In Seconds)");
-                }
+                    player.sendMessage(ChatColor.GOLD + "How far into the game should the final heal be? (In Seconds), type x to go back");
+                    player.sendMessage(ChatColor.GOLD + "Currently is " + plugin.finalheal);
+                } else
                 if (clickeditem.isSimilar(ItemButtonManager.PVP)) {
                     plugin.timeEdited.put(player.getUniqueId(), 3);
                     player.closeInventory();
-                    player.sendMessage(ChatColor.GOLD + "How far into the game should the PVP be? (In Minutes)");
-                }
+                    player.sendMessage(ChatColor.GOLD + "How far into the game should the PVP be? (In Minutes), type x to go back");
+                    player.sendMessage(ChatColor.GOLD + "Currently is " + plugin.pvpenable/60);
+                } else
                 if (clickeditem.isSimilar(ItemButtonManager.BORDER)) {
                     plugin.timeEdited.put(player.getUniqueId(), 4);
                     player.closeInventory();
-                    player.sendMessage(ChatColor.GOLD + "How far into the game should the border shrink? (In Minutes)");
-                }
+                    player.sendMessage(ChatColor.GOLD + "How far into the game should the border shrink? (In Minutes), type x to go back");
+                    player.sendMessage(ChatColor.GOLD + "Currently is " + plugin.bordershrink/60);
+                } else
                 if (clickeditem.isSimilar(ItemButtonManager.MEETUP)) {
                     plugin.timeEdited.put(player.getUniqueId(), 5);
                     player.closeInventory();
-                    player.sendMessage(ChatColor.GOLD + "How far into the game should the meetup be? (In Minutes)");
-                }
+                    player.sendMessage(ChatColor.GOLD + "How far into the game should the meetup be? (In Minutes), type x to go back");
+                    player.sendMessage(ChatColor.GOLD + "Currently is " + plugin.meetup/60);
+                } else
                 if (clickeditem.isSimilar(ItemButtonManager.INITIAL_BORDER)) {
                     plugin.timeEdited.put(player.getUniqueId(), 6);
                     player.closeInventory();
-                    player.sendMessage(ChatColor.GOLD + "What should the radius of the initial border be?");
-                }
+                    player.sendMessage(ChatColor.GOLD + "What should the radius of the initial border (first shrink) be? (In blocks), type x to go back");
+                    player.sendMessage(ChatColor.GOLD + "Currently is " + plugin.initialborder);
+                } else
                 if (clickeditem.isSimilar(ItemButtonManager.BORDER_SHRINK)) {
                     plugin.timeEdited.put(player.getUniqueId(), 7);
                     player.closeInventory();
-                    player.sendMessage(ChatColor.GOLD + "What should the radius of the border shrink border be?");
-                }
+                    player.sendMessage(ChatColor.GOLD + "What should the radius of the border shrink border (second shrink) be? (In blocks), type x to go back");
+                    player.sendMessage(ChatColor.GOLD + "Currently is " + plugin.bordersize);
+                } else
                 if (clickeditem.isSimilar(ItemButtonManager.MEETUP_BORDER)) {
                     plugin.timeEdited.put(player.getUniqueId(), 8);
                     player.closeInventory();
-                    player.sendMessage(ChatColor.GOLD + "What should the radius of the meetup border be?");
+                    player.sendMessage(ChatColor.GOLD + "What should the radius of the meetup border (last/third shrink) be? (In blocks), type x to go back");
+                    player.sendMessage(ChatColor.GOLD + "Currently is " + plugin.meetupborder);
                 }
                 else if (clickeditem.isSimilar(ItemButtonManager.END_UHC)) {
                     player.closeInventory();
-                    Bukkit.broadcastMessage(ChatColor.RED + "UHC has ended!");
                     player.playSound(player.getLocation(), Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 1, 0.5F);
-                    UHCAPI.isStarted = false;
-                    plugin.meetupdone = false;
-                    UHCCore.Init();
-                    for (World world : Bukkit.getWorlds()) {
-                        world.setGameRule(GameRule.DO_DAYLIGHT_CYCLE, true);
-                        world.getWorldBorder().setSize(29999984);
-                        world.setDifficulty(STORED_DIFFICULTY);
-                        world.setGameRule(GameRule.DO_WEATHER_CYCLE, STORED_WEATHER);
-                        world.setGameRule(GameRule.NATURAL_REGENERATION, true);
-                        world.setGameRule(GameRule.DO_IMMEDIATE_RESPAWN, false);
-                    }
-                    for (Player others : Bukkit.getOnlinePlayers()) {
-                        others.setInvulnerable(false);
-                    }
+                    UHCStop.stopUHC(null, ChatColor.RED + "The host decided to stop the UHC! UHC has ended.");
                 }
             }
         }

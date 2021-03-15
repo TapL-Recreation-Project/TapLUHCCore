@@ -1,9 +1,17 @@
 package me.swipez.uhccore.itembuttons;
 
+import me.swipez.uhccore.UHCCore;
 import me.swipez.uhccore.utils.ItemBuilder;
-import org.bukkit.ChatColor;
-import org.bukkit.Material;
+import org.bukkit.*;
+
+import org.bukkit.block.Skull;
+import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.RecipeChoice;
+import org.bukkit.inventory.ShapedRecipe;
+import org.bukkit.inventory.meta.SkullMeta;
+
+import java.lang.reflect.Field;
 
 public class ItemButtonManager {
 
@@ -70,4 +78,14 @@ public class ItemButtonManager {
     public static final ItemStack MEETUP_BORDER = ItemBuilder.of(Material.STRUCTURE_VOID)
             .name(ChatColor.RED+"MEETUP BORDER")
             .build();
+    @SuppressWarnings("deprecation")
+    public static final ItemStack getGoldenHead() {
+        ItemStack itemStack = new ItemStack(Material.PLAYER_HEAD, 1);
+        SkullMeta skullMeta = (SkullMeta) itemStack.getItemMeta();
+        skullMeta.setOwner("Gold_steve");
+        skullMeta.setDisplayName(ChatColor.GOLD + "Golden Head");
+        itemStack.setItemMeta(skullMeta);
+        return itemStack;
+    }
+
 }

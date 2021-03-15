@@ -29,66 +29,66 @@ public class ChatEditListener implements Listener {
 
                     case 1:
                         plugin.invincibility = Integer.parseInt(event.getMessage());
-                        plugin.timeEdited.remove(uuid);
                         event.getPlayer().openInventory(GUIManager.makeTimingSettingsGUI(event.getPlayer()));
                         event.getPlayer().sendMessage(ChatColor.GOLD + "Invincibility period is now set to " + event.getMessage() + " seconds");
-                        plugin.isInGUI.put(uuid, true);
                         break;
                     case 2:
                         plugin.finalheal = Integer.parseInt(event.getMessage());
-                        plugin.timeEdited.remove(uuid);
                         event.getPlayer().openInventory(GUIManager.makeTimingSettingsGUI(event.getPlayer()));
                         event.getPlayer().sendMessage(ChatColor.GOLD + "Final heal is now set to " + event.getMessage() + " seconds");
-                        plugin.isInGUI.put(uuid, true);
                         break;
                     case 3:
                         plugin.pvpenable = Integer.parseInt(event.getMessage()) * 60;
-                        plugin.timeEdited.remove(uuid);
                         event.getPlayer().openInventory(GUIManager.makeTimingSettingsGUI(event.getPlayer()));
                         event.getPlayer().sendMessage(ChatColor.GOLD + "PVP enable period is now set to " + event.getMessage() + " minutes");
-                        plugin.isInGUI.put(uuid, true);
                         break;
                     case 4:
                         plugin.bordershrink = Integer.parseInt(event.getMessage()) * 60;
-                        plugin.timeEdited.remove(uuid);
                         event.getPlayer().openInventory(GUIManager.makeTimingSettingsGUI(event.getPlayer()));
                         event.getPlayer().sendMessage(ChatColor.GOLD + "Border shrink period is now set to " + event.getMessage() + " minutes");
-                        plugin.isInGUI.put(uuid, true);
                         break;
                     case 5:
                         plugin.meetup = Integer.parseInt(event.getMessage())*60;
-                        plugin.timeEdited.remove(uuid);
                         event.getPlayer().openInventory(GUIManager.makeTimingSettingsGUI(event.getPlayer()));
                         event.getPlayer().sendMessage(ChatColor.GOLD + "Meetup period is now set to " + event.getMessage() + " minutes");
-                        plugin.isInGUI.put(uuid, true);
                         break;
                     case 6:
                         plugin.initialborder = Integer.parseInt(event.getMessage());
-                        plugin.timeEdited.remove(uuid);
                         event.getPlayer().openInventory(GUIManager.makeBorderSettingsGUI(event.getPlayer()));
                         event.getPlayer().sendMessage(ChatColor.GOLD + "Initial border size is now set to " + event.getMessage());
-                        plugin.isInGUI.put(uuid, true);
                         break;
                     case 7:
                         plugin.bordersize = Integer.parseInt(event.getMessage());
-                        plugin.timeEdited.remove(uuid);
                         event.getPlayer().openInventory(GUIManager.makeBorderSettingsGUI(event.getPlayer()));
                         event.getPlayer().sendMessage(ChatColor.GOLD + "Border shrink size is now set to " + event.getMessage());
-                        plugin.isInGUI.put(uuid, true);
                         break;
                     case 8:
                         plugin.meetupborder = Integer.parseInt(event.getMessage());
-                        plugin.timeEdited.remove(uuid);
                         event.getPlayer().openInventory(GUIManager.makeBorderSettingsGUI(event.getPlayer()));
                         event.getPlayer().sendMessage(ChatColor.GOLD + "Meetup border size is now set to " + event.getMessage());
-                        plugin.isInGUI.put(uuid, true);
                         break;
                 }
-                event.setCancelled(true);
-            } catch (NumberFormatException exception) {
-                event.getPlayer().sendMessage(ChatColor.GOLD+"That is not a number! Try again");
-                event.setCancelled(true);
+
+                plugin.timeEdited.remove(uuid);
+                plugin.isInGUI.put(uuid, true);
             }
+            catch (NumberFormatException exception) {
+                if (event.getMessage().equals("x"))  {
+                    if (plugin.timeEdited.get(uuid) < 6){
+                        event.getPlayer().openInventory(GUIManager.makeTimingSettingsGUI(event.getPlayer()));
+                    }
+                    else {
+                        event.getPlayer().openInventory(GUIManager.makeBorderSettingsGUI(event.getPlayer()));
+                    }
+                    plugin.timeEdited.remove(uuid);
+                    event.setCancelled(true);
+                    plugin.isInGUI.put(uuid, true);
+                }
+                else {
+                    event.getPlayer().sendMessage(ChatColor.GOLD+"That is not a number! Try again");
+                }
+            }
+            event.setCancelled(true);
         }
     }
 }
