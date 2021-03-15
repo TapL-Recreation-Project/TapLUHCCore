@@ -124,35 +124,7 @@ public class BuiltInEvents implements Listener {
 
     @EventHandler
     public void onSpawn(CreatureSpawnEvent e) {
-        if (UHCAPI.isStarted && !customEventsBooleans.get(HOSTILE_MOBS) && (e.getEntity() instanceof Zombie ||
-        e.getEntity() instanceof Skeleton ||
-        e.getEntity() instanceof Creeper ||
-        e.getEntity() instanceof Spider ||
-        e.getEntity() instanceof ZombieHorse ||
-        e.getEntity() instanceof CaveSpider ||
-        e.getEntity() instanceof Drowned ||
-        e.getEntity() instanceof Blaze ||
-        e.getEntity() instanceof Ghast ||
-        e.getEntity() instanceof Zoglin ||
-        e.getEntity() instanceof PiglinBrute ||
-        e.getEntity() instanceof SkeletonHorse ||
-        e.getEntity() instanceof MagmaCube ||
-        e.getEntity() instanceof Slime ||
-        e.getEntity() instanceof Witch ||
-        e.getEntity() instanceof Vindicator ||
-        e.getEntity() instanceof Wither ||
-        e.getEntity() instanceof WitherSkeleton ||
-        e.getEntity() instanceof Evoker ||
-        e.getEntity() instanceof ElderGuardian ||
-        e.getEntity() instanceof Guardian ||
-        e.getEntity() instanceof Enderman ||
-        e.getEntity() instanceof Endermite ||
-        e.getEntity() instanceof Shulker ||
-        e.getEntity() instanceof Husk ||
-        e.getEntity() instanceof Silverfish ||
-        e.getEntity() instanceof Stray ||
-        e.getEntity() instanceof Vex ||
-        e.getEntity() instanceof ZombieVillager)) {
+        if (UHCAPI.isStarted && !customEventsBooleans.get(HOSTILE_MOBS) && (e.getEntity() instanceof Monster)) {
             e.setCancelled(true);
         }
     }
