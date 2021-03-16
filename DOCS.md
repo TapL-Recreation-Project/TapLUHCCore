@@ -1,6 +1,6 @@
 ## How to make a plugin compatible with UHCCore
 
-1. Make your plugin.yml have our plugin as a .
+1. Make your plugin.yml have our plugin as a softdepend.
 2. Make a new folder next to `src` called `lib` and drop our UHCCore jar in it.
 3. Add our core to the plugin with maven:
 ```xml
