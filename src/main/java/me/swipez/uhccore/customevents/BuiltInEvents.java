@@ -4,17 +4,20 @@ import me.swipez.uhccore.api.UHCAPI;
 import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.entity.*;
+import org.bukkit.event.inventory.CraftItemEvent;
 import org.bukkit.inventory.ItemStack;
 
 
 import java.util.HashMap;
 import java.util.Map;
 import me.swipez.uhccore.utils.ItemBuilder;
+import org.bukkit.inventory.meta.ItemMeta;
 
 
 public class BuiltInEvents implements Listener {
@@ -28,6 +31,7 @@ public class BuiltInEvents implements Listener {
     public static ItemStack HOSTILE_MOBS = ItemBuilder.of(Material.ZOMBIE_HEAD, 1).name(ChatColor.RED+"Hostile mobs").build();
     public static ItemStack LOSE_HUNGER = ItemBuilder.of(Material.POISONOUS_POTATO, 1).name(ChatColor.GREEN+"Lose hunger").build();
     public static ItemStack DO_WEATHER = ItemBuilder.of(Material.WATER_BUCKET, 1).name(ChatColor.DARK_PURPLE+"Always clear weather").build();
+    public static ItemStack HASTEY_BOIS = ItemBuilder.of(Material.STONE_PICKAXE, 1).name(ChatColor.GRAY+"Hastey Bois").enchantment(Enchantment.DIG_SPEED, 1).enchantment(Enchantment.DURABILITY, 1).build();
     public static Map<ItemStack, Boolean> customEventsBooleans = new HashMap<>();
     static {
         customEventsBooleans.put(CUT_CLEAN, true);
@@ -38,6 +42,7 @@ public class BuiltInEvents implements Listener {
         customEventsBooleans.put(HOSTILE_MOBS, false);
         customEventsBooleans.put(LOSE_HUNGER, false);
         customEventsBooleans.put(DO_WEATHER, false);
+        customEventsBooleans.put(HASTEY_BOIS, false);
     }
 
     @EventHandler
@@ -124,36 +129,38 @@ public class BuiltInEvents implements Listener {
 
     @EventHandler
     public void onSpawn(CreatureSpawnEvent e) {
-        if (UHCAPI.isStarted && !customEventsBooleans.get(HOSTILE_MOBS) && (e.getEntity() instanceof Zombie ||
-        e.getEntity() instanceof Skeleton ||
-        e.getEntity() instanceof Creeper ||
-        e.getEntity() instanceof Spider ||
-        e.getEntity() instanceof ZombieHorse ||
-        e.getEntity() instanceof CaveSpider ||
-        e.getEntity() instanceof Drowned ||
-        e.getEntity() instanceof Blaze ||
-        e.getEntity() instanceof Ghast ||
-        e.getEntity() instanceof Zoglin ||
-        e.getEntity() instanceof PiglinBrute ||
-        e.getEntity() instanceof SkeletonHorse ||
-        e.getEntity() instanceof MagmaCube ||
-        e.getEntity() instanceof Slime ||
-        e.getEntity() instanceof Witch ||
-        e.getEntity() instanceof Vindicator ||
-        e.getEntity() instanceof Wither ||
-        e.getEntity() instanceof WitherSkeleton ||
-        e.getEntity() instanceof Evoker ||
-        e.getEntity() instanceof ElderGuardian ||
-        e.getEntity() instanceof Guardian ||
-        e.getEntity() instanceof Enderman ||
-        e.getEntity() instanceof Endermite ||
-        e.getEntity() instanceof Shulker ||
-        e.getEntity() instanceof Husk ||
-        e.getEntity() instanceof Silverfish ||
-        e.getEntity() instanceof Stray ||
-        e.getEntity() instanceof Vex ||
-        e.getEntity() instanceof ZombieVillager)) {
+        if (UHCAPI.isStarted && !customEventsBooleans.get(HOSTILE_MOBS) && (e.getEntity() instanceof Monster)) {
             e.setCancelled(true);
+        }
+    }
+
+    @EventHandler
+    public void onCraft(CraftItemEvent e) {
+        if (UHCAPI.isStarted && customEventsBooleans.get(HASTEY_BOIS) && (e.getInventory().getResult().getType().equals(Material.WOODEN_AXE) ||
+                e.getInventory().getResult().getType().equals(Material.WOODEN_PICKAXE) ||
+                e.getInventory().getResult().getType().equals(Material.WOODEN_HOE) ||
+                e.getInventory().getResult().getType().equals(Material.WOODEN_SHOVEL) ||
+                e.getInventory().getResult().getType().equals(Material.STONE_AXE) ||
+                e.getInventory().getResult().getType().equals(Material.STONE_PICKAXE) ||
+                e.getInventory().getResult().getType().equals(Material.STONE_HOE) ||
+                e.getInventory().getResult().getType().equals(Material.STONE_SHOVEL) ||
+                e.getInventory().getResult().getType().equals(Material.GOLDEN_AXE) ||
+                e.getInventory().getResult().getType().equals(Material.GOLDEN_PICKAXE) ||
+                e.getInventory().getResult().getType().equals(Material.GOLDEN_HOE) ||
+                e.getInventory().getResult().getType().equals(Material.GOLDEN_SHOVEL) ||
+                e.getInventory().getResult().getType().equals(Material.IRON_AXE) ||
+                e.getInventory().getResult().getType().equals(Material.IRON_PICKAXE) ||
+                e.getInventory().getResult().getType().equals(Material.IRON_HOE) ||
+                e.getInventory().getResult().getType().equals(Material.IRON_SHOVEL) ||
+                e.getInventory().getResult().getType().equals(Material.DIAMOND_AXE) ||
+                e.getInventory().getResult().getType().equals(Material.DIAMOND_PICKAXE) ||
+                e.getInventory().getResult().getType().equals(Material.DIAMOND_HOE) ||
+                e.getInventory().getResult().getType().equals(Material.DIAMOND_SHOVEL))) {
+            ItemStack itemStack = e.getInventory().getResult();
+            ItemMeta meta = itemStack.getItemMeta();
+            meta.addEnchant(Enchantment.DURABILITY, 1, true);
+            meta.addEnchant(Enchantment.DIG_SPEED, 1, true);
+            itemStack.setItemMeta(meta);
         }
     }
 }
