@@ -3,6 +3,7 @@ package me.swipez.uhccore.api;
 import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class UHCAPI {
@@ -13,14 +14,12 @@ public class UHCAPI {
     public static void registerPlugin(UHCPlugin p) {
         pluginList.add(p);
     }
+
     public static void registerPlugins(UHCPlugin[] p) {
-        for (UHCPlugin plugin : p) {
-            pluginList.add(plugin);
-        }
+        pluginList.addAll(Arrays.asList(p));
     }
+
     public static void registerPlugins(List<UHCPlugin> p) {
-        for (UHCPlugin plugin : p) {
-            pluginList.add(plugin);
-        }
+        pluginList.addAll(p);
     }
 }
