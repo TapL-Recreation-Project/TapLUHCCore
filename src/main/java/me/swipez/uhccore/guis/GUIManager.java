@@ -144,15 +144,19 @@ public class GUIManager {
     }
     public static Inventory DisplayVanillaEvents(Inventory inventory, Map<ItemStack, Boolean> items){
         int slot = 0;
+        int displaycount = 0;
         for (Map.Entry<ItemStack, Boolean> entry : items.entrySet()) {
-            inventory.addItem(entry.getKey());
-            if (entry.getValue()){
-                inventory.setItem(slot+9, ItemButtonManager.ENABLED_EVENT);
+            if (displaycount < 9){
+                inventory.addItem(entry.getKey());
+                if (entry.getValue()){
+                    inventory.setItem(slot+9, ItemButtonManager.ENABLED_EVENT);
+                }
+                else {
+                    inventory.setItem(slot+9, ItemButtonManager.DISABLED_EVENT);
+                }
+                slot++;
+                displaycount++;
             }
-            else {
-                inventory.setItem(slot+9, ItemButtonManager.DISABLED_EVENT);
-            }
-            slot++;
         }
         return inventory;
     }

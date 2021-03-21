@@ -8,10 +8,7 @@ import me.swipez.uhccore.itembuttons.ItemButtonManager;
 import me.swipez.uhccore.runnables.BorderDivide;
 import me.swipez.uhccore.runnables.TimeDecrease;
 import me.swipez.uhccore.runnables.TimeRunOut;
-import me.swipez.uhccore.uhclisteners.ChatEditListener;
-import me.swipez.uhccore.uhclisteners.DeathListener;
-import me.swipez.uhccore.uhclisteners.JoinListener;
-import me.swipez.uhccore.uhclisteners.PVPStop;
+import me.swipez.uhccore.uhclisteners.*;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
@@ -75,11 +72,13 @@ public final class UHCCore extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new ChatEditListener(this), this);
         getServer().getPluginManager().registerEvents(new DeathListener(this), this);
         getServer().getPluginManager().registerEvents(new JoinListener(), this);
+        getServer().getPluginManager().registerEvents(new BlockBreakListener(), this);
 
         //Runnables
         BukkitTask TimeDecrease = new TimeDecrease(this).runTaskTimer(this, 20, 20);
         BukkitTask TimeRunOut = new TimeRunOut(this).runTaskTimer(this, 20, 20);
         BukkitTask BorderDivide = new BorderDivide(this).runTaskTimer(this, 20, 20);
+
         //Recipe
         registerGoldenHeadRecipe(this, "golden_head_recipe", new ItemStack(Material.ENCHANTED_GOLDEN_APPLE, 1), new ItemStack(Material.APPLE, 1));
 
