@@ -1,23 +1,28 @@
 package me.swipez.uhccore.customevents;
 
 import me.swipez.uhccore.api.UHCAPI;
-import org.bukkit.*;
+import me.swipez.uhccore.utils.ItemBuilder;
+import org.bukkit.ChatColor;
+import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.enchantments.Enchantment;
-import org.bukkit.entity.*;
+import org.bukkit.enchantments.EnchantmentTarget;
+import org.bukkit.entity.Monster;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
-import org.bukkit.event.entity.*;
+import org.bukkit.event.entity.CreatureSpawnEvent;
+import org.bukkit.event.entity.EntityDamageEvent;
+import org.bukkit.event.entity.EntityDeathEvent;
+import org.bukkit.event.entity.FoodLevelChangeEvent;
 import org.bukkit.event.inventory.CraftItemEvent;
 import org.bukkit.inventory.ItemStack;
-
+import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.HashMap;
 import java.util.Map;
-import me.swipez.uhccore.utils.ItemBuilder;
-import org.bukkit.inventory.meta.ItemMeta;
 
 
 public class BuiltInEvents implements Listener {
@@ -47,7 +52,10 @@ public class BuiltInEvents implements Listener {
 
     @EventHandler
     public void onBreak(BlockBreakEvent e) {
-        if (customEventsBooleans.get(TIMBER) && UHCAPI.isStarted && (e.getBlock().getType().toString().toLowerCase().contains("_log"))) {
+        if (!UHCAPI.isStarted) {
+            return;
+        }
+        if (customEventsBooleans.get(TIMBER) && (e.getBlock().getType().toString().toLowerCase().contains("_log"))) {
             Material heldMaterial = e.getPlayer().getInventory().getItemInMainHand().getType();
             Material brokenMaterial = e.getBlock().getType();
             if (heldMaterial.toString().toLowerCase().contains("_axe")
@@ -55,7 +63,7 @@ public class BuiltInEvents implements Listener {
                 breakAdjacentWood(e.getBlock().getLocation(), e.getBlock().getType(), false);
             }
         }
-        if (customEventsBooleans.get(VEINMINER) && UHCAPI.isStarted && e.getBlock().getType().toString().toLowerCase().contains("_ore") && e.getPlayer().getInventory().getItemInMainHand().getType().toString().toLowerCase().contains("_pickaxe")) {
+        if (customEventsBooleans.get(VEINMINER) && e.getBlock().getType().toString().toLowerCase().contains("_ore") && e.getPlayer().getInventory().getItemInMainHand().getType().toString().toLowerCase().contains("_pickaxe")) {
             if (e.getBlock().getType().equals(Material.IRON_ORE) || (e.getBlock().getType().equals(Material.GOLD_ORE) && !e.getPlayer().getInventory().getItemInMainHand().getType().toString().toLowerCase().contains("stone_"))) {
                 e.setDropItems(false);
                 breakAdjacentWood(e.getBlock().getLocation(), e.getBlock().getType(), customEventsBooleans.get(CUT_CLEAN));
@@ -63,7 +71,7 @@ public class BuiltInEvents implements Listener {
                 breakAdjacentWood(e.getBlock().getLocation(), e.getBlock().getType(), false);
             }
         }
-        if (customEventsBooleans.get(CUT_CLEAN) && UHCAPI.isStarted && e.getBlock().getType().toString().toLowerCase().contains("_ore") && e.getPlayer().getInventory().getItemInMainHand().getType().toString().toLowerCase().contains("_pickaxe") && !e.getPlayer().getInventory().getItemInMainHand().getType().toString().toLowerCase().contains("wooden_")) {
+        if (customEventsBooleans.get(CUT_CLEAN) && e.getBlock().getType().toString().toLowerCase().contains("_ore") && e.getPlayer().getInventory().getItemInMainHand().getType().toString().toLowerCase().contains("_pickaxe") && !e.getPlayer().getInventory().getItemInMainHand().getType().toString().toLowerCase().contains("wooden_")) {
             if (e.getBlock().getType().equals(Material.IRON_ORE)) {
                 e.setDropItems(false);
                 dropCutClean(e.getBlock());
@@ -136,26 +144,8 @@ public class BuiltInEvents implements Listener {
 
     @EventHandler
     public void onCraft(CraftItemEvent e) {
-        if (UHCAPI.isStarted && customEventsBooleans.get(HASTEY_BOIS) && (e.getInventory().getResult().getType().equals(Material.WOODEN_AXE) ||
-                e.getInventory().getResult().getType().equals(Material.WOODEN_PICKAXE) ||
-                e.getInventory().getResult().getType().equals(Material.WOODEN_HOE) ||
-                e.getInventory().getResult().getType().equals(Material.WOODEN_SHOVEL) ||
-                e.getInventory().getResult().getType().equals(Material.STONE_AXE) ||
-                e.getInventory().getResult().getType().equals(Material.STONE_PICKAXE) ||
-                e.getInventory().getResult().getType().equals(Material.STONE_HOE) ||
-                e.getInventory().getResult().getType().equals(Material.STONE_SHOVEL) ||
-                e.getInventory().getResult().getType().equals(Material.GOLDEN_AXE) ||
-                e.getInventory().getResult().getType().equals(Material.GOLDEN_PICKAXE) ||
-                e.getInventory().getResult().getType().equals(Material.GOLDEN_HOE) ||
-                e.getInventory().getResult().getType().equals(Material.GOLDEN_SHOVEL) ||
-                e.getInventory().getResult().getType().equals(Material.IRON_AXE) ||
-                e.getInventory().getResult().getType().equals(Material.IRON_PICKAXE) ||
-                e.getInventory().getResult().getType().equals(Material.IRON_HOE) ||
-                e.getInventory().getResult().getType().equals(Material.IRON_SHOVEL) ||
-                e.getInventory().getResult().getType().equals(Material.DIAMOND_AXE) ||
-                e.getInventory().getResult().getType().equals(Material.DIAMOND_PICKAXE) ||
-                e.getInventory().getResult().getType().equals(Material.DIAMOND_HOE) ||
-                e.getInventory().getResult().getType().equals(Material.DIAMOND_SHOVEL))) {
+        if (UHCAPI.isStarted && customEventsBooleans.get(HASTEY_BOIS) &&
+                EnchantmentTarget.TOOL.includes(e.getInventory().getResult().getType())) {
             ItemStack itemStack = e.getInventory().getResult();
             ItemMeta meta = itemStack.getItemMeta();
             meta.addEnchant(Enchantment.DURABILITY, 1, true);
@@ -164,4 +154,3 @@ public class BuiltInEvents implements Listener {
         }
     }
 }
-

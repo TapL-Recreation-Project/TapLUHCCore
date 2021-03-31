@@ -2,6 +2,7 @@ package me.swipez.uhccore.utils;
 
 import net.md_5.bungee.api.ChatMessageType;
 import net.md_5.bungee.api.chat.TextComponent;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
@@ -19,5 +20,11 @@ public class SendTitleBarMessage {
             time = ChatColor.GRAY + " [" + minutes + ":" + seconds + "]";
 
         player.spigot().sendMessage(ChatMessageType.ACTION_BAR, new TextComponent(name + time));
+    }
+
+    public static void broadcast(String name, int seconds) {
+        for (Player player : Bukkit.getOnlinePlayers()) {
+            sendMessage(player, name, seconds);
+        }
     }
 }

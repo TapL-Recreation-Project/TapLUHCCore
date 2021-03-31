@@ -72,7 +72,7 @@ public class ItemButtonManager {
             .name(ChatColor.RED+"MEETUP BORDER")
             .build();
     @SuppressWarnings("deprecation")
-    public static final ItemStack getGoldenHead() {
+    public static ItemStack getGoldenHead() {
         ItemStack itemStack = new ItemStack(Material.PLAYER_HEAD, 1);
         SkullMeta skullMeta = (SkullMeta) itemStack.getItemMeta();
         skullMeta.setOwner("Gold_steve");
