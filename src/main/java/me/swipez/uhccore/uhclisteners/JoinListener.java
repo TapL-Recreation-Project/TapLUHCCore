@@ -3,10 +3,12 @@ package me.swipez.uhccore.uhclisteners;
 import me.swipez.uhccore.UHCCore;
 import me.swipez.uhccore.api.UHCAPI;
 import me.swipez.uhccore.itembuttons.ItemButtonManager;
-import org.bukkit.*;
+import org.bukkit.ChatColor;
+import org.bukkit.GameMode;
+import org.bukkit.HeightMap;
+import org.bukkit.Location;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.entity.EntityType;
-import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageEvent;
@@ -57,7 +59,7 @@ public class JoinListener implements Listener {
                 }
             } else if (UHCAPI.deadPlayers.contains(e.getPlayer()) || !UHCAPI.livingPlayers.contains(e.getPlayer())) {
                 e.getPlayer().setGameMode(GameMode.SPECTATOR);
-                e.getPlayer().sendMessage(ChatColor.RED + "You joined the game in the imddle of a UHC but you were already dead!");
+                e.getPlayer().sendMessage(ChatColor.RED + "You joined the game in the middle of a UHC but you were already dead!");
             }
         }
     }

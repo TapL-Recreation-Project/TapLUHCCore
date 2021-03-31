@@ -24,6 +24,7 @@ import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -184,33 +185,38 @@ public class GUIListener implements Listener {
                             world.setGameRule(GameRule.NATURAL_REGENERATION, false);
                             world.setGameRule(GameRule.DO_IMMEDIATE_RESPAWN, true);
                         }
-                        for (Player others : Bukkit.getOnlinePlayers()) {
 
+                        Random random = new Random();
+
+                        int playerIndex = 0;
+                        for (Player others : Bukkit.getOnlinePlayers()) {
                             others.setInvulnerable(true);
                             others.setHealth(others.getAttribute(Attribute.GENERIC_MAX_HEALTH).getBaseValue());
                             others.setFoodLevel(20);
 
-                            Random random = new Random();
-                            double randomx = random.nextInt(plugin.initialborder / 2);
-                            double randomz = random.nextInt(plugin.initialborder / 2);
-                            int coinflipx = (int) (Math.random() * 100);
-                            int coinflipz = (int) (Math.random() * 100);
-                            if (coinflipx < 50) {
-                                randomx = randomx * -1;
-                            }
-                            if (coinflipz < 50) {
-                                randomz = randomz * -1;
-                            }
-                            Location teleportloc = others.getLocation();
-                            teleportloc.setX(randomx);
-                            teleportloc.setZ(randomz);
-                            double y = others.getWorld().getHighestBlockYAt(teleportloc);
-                            teleportloc.setY(y);
-                            others.teleport(teleportloc);
-                            others.sendMessage(ChatColor.RED + "UHC has started!");
-                            others.getInventory().clear();
-                            others.setGameMode(GameMode.SURVIVAL);
-                            UHCAPI.livingPlayers.add(others);
+                            BukkitRunnable timedTeleporter = new BukkitRunnable() {
+                                @Override
+                                public void run() {
+                                    double randomX = random.nextInt(plugin.initialborder / 2);
+                                    double randomZ = random.nextInt(plugin.initialborder / 2);
+                                    boolean flipX = random.nextBoolean();
+                                    boolean flipZ = random.nextBoolean();
+                                    randomX *= flipX ? -1 : 1;
+                                    randomZ *= flipZ ? -1 : 1;
+                                    Location teleportloc = others.getLocation();
+                                    teleportloc.setX(randomX);
+                                    teleportloc.setZ(randomZ);
+                                    double y = others.getWorld().getHighestBlockYAt(teleportloc);
+                                    teleportloc.setY(y);
+                                    others.teleport(teleportloc);
+                                    others.sendMessage(ChatColor.RED + "UHC has started!");
+                                    others.getInventory().clear();
+                                    others.setGameMode(GameMode.SURVIVAL);
+                                    UHCAPI.livingPlayers.add(others);
+                                }
+                            };
+                            timedTeleporter.runTaskLater(plugin, playerIndex);
+                            playerIndex++;
                         }
                         UHCAPI.isStarted = true;
                         if (BuiltInEvents.customEventsBooleans.get(BuiltInEvents.ALWAYS_DAY)) {
@@ -219,6 +225,7 @@ public class GUIListener implements Listener {
                                 world.setTime(1000l);
                             }
                         }
+                        // TODO: NPE if default world isn't called ''world''
                         STORED_DIFFICULTY = Bukkit.getWorld("world").getDifficulty();
                         if (!BuiltInEvents.customEventsBooleans.get(BuiltInEvents.LOSE_HUNGER) && !BuiltInEvents.customEventsBooleans.get(BuiltInEvents.HOSTILE_MOBS)) {
                             for (World world : Bukkit.getWorlds()) {
