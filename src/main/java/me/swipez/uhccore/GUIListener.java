@@ -204,12 +204,13 @@ public class GUIListener implements Listener {
                                     final int randomX = signX * random.nextInt(UHCCore.initialborder / 2);
                                     final int randomZ = signZ * random.nextInt(UHCCore.initialborder / 2);
 
-                                    Location teleportloc = others.getLocation();
-
                                     PaperLib.getChunkAtAsync(others.getWorld(), randomX >> 4, randomZ >> 4, true).thenAccept(chunk -> {
-                                            teleportloc.setX(randomX);
-                                            teleportloc.setZ(randomZ);
-                                            teleportloc.setY(teleportloc.getWorld().getHighestBlockYAt(teleportloc));
+                                            others.teleport(new Location(
+                                                    others.getWorld(),
+                                                    randomX,
+                                                    others.getWorld().getHighestBlockYAt(randomX, randomZ) + 1,
+                                                    randomZ
+                                            ));
                                             others.getInventory().clear();
                                         }
                                     );
