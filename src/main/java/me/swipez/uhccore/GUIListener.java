@@ -1,5 +1,6 @@
 package me.swipez.uhccore;
 
+import io.papermc.lib.PaperLib;
 import me.swipez.uhccore.api.UHCAPI;
 import me.swipez.uhccore.api.UHCPlugin;
 import me.swipez.uhccore.bstats.Metrics;
@@ -197,20 +198,23 @@ public class GUIListener implements Listener {
                             BukkitRunnable timedTeleporter = new BukkitRunnable() {
                                 @Override
                                 public void run() {
-                                    double randomX = random.nextInt(plugin.initialborder / 2);
-                                    double randomZ = random.nextInt(plugin.initialborder / 2);
-                                    boolean flipX = random.nextBoolean();
-                                    boolean flipZ = random.nextBoolean();
-                                    randomX *= flipX ? -1 : 1;
-                                    randomZ *= flipZ ? -1 : 1;
+
+                                    int signX = random.nextBoolean() ? 1 : -1;
+                                    int signZ = random.nextBoolean() ? 1 : -1;
+                                    final int randomX = signX * random.nextInt(UHCCore.initialborder / 2);
+                                    final int randomZ = signZ * random.nextInt(UHCCore.initialborder / 2);
+
                                     Location teleportloc = others.getLocation();
-                                    teleportloc.setX(randomX);
-                                    teleportloc.setZ(randomZ);
-                                    double y = others.getWorld().getHighestBlockYAt(teleportloc);
-                                    teleportloc.setY(y);
-                                    others.teleport(teleportloc);
+
+                                    PaperLib.getChunkAtAsync(others.getWorld(), randomX >> 4, randomZ >> 4, true).thenAccept(chunk -> {
+                                            teleportloc.setX(randomX);
+                                            teleportloc.setZ(randomZ);
+                                            teleportloc.setY(teleportloc.getWorld().getHighestBlockYAt(teleportloc));
+                                            others.getInventory().clear();
+                                        }
+                                    );
+
                                     others.sendMessage(ChatColor.RED + "UHC has started!");
-                                    others.getInventory().clear();
                                     others.setGameMode(GameMode.SURVIVAL);
                                     UHCAPI.livingPlayers.add(others);
                                 }

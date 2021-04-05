@@ -5,7 +5,6 @@ import me.swipez.uhccore.guis.GUIManager;
 import org.bukkit.ChatColor;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.event.player.PlayerChatEvent;
 
 import java.util.UUID;
@@ -28,42 +27,42 @@ public class ChatEditListener implements Listener {
 
 
                     case 1:
-                        plugin.invincibility = Integer.parseInt(event.getMessage());
+                        UHCCore.invincibility = Integer.parseInt(event.getMessage());
                         event.getPlayer().openInventory(GUIManager.makeTimingSettingsGUI(event.getPlayer()));
                         event.getPlayer().sendMessage(ChatColor.GOLD + "Invincibility period is now set to " + event.getMessage() + " seconds");
                         break;
                     case 2:
-                        plugin.finalheal = Integer.parseInt(event.getMessage());
+                        UHCCore.finalheal = Integer.parseInt(event.getMessage());
                         event.getPlayer().openInventory(GUIManager.makeTimingSettingsGUI(event.getPlayer()));
                         event.getPlayer().sendMessage(ChatColor.GOLD + "Final heal is now set to " + event.getMessage() + " seconds");
                         break;
                     case 3:
-                        plugin.pvpenable = Integer.parseInt(event.getMessage()) * 60;
+                        UHCCore.pvpenable = Integer.parseInt(event.getMessage()) * 60;
                         event.getPlayer().openInventory(GUIManager.makeTimingSettingsGUI(event.getPlayer()));
                         event.getPlayer().sendMessage(ChatColor.GOLD + "PVP enable period is now set to " + event.getMessage() + " minutes");
                         break;
                     case 4:
-                        plugin.bordershrink = Integer.parseInt(event.getMessage()) * 60;
+                        UHCCore.bordershrink = Integer.parseInt(event.getMessage()) * 60;
                         event.getPlayer().openInventory(GUIManager.makeTimingSettingsGUI(event.getPlayer()));
                         event.getPlayer().sendMessage(ChatColor.GOLD + "Border shrink period is now set to " + event.getMessage() + " minutes");
                         break;
                     case 5:
-                        plugin.meetup = Integer.parseInt(event.getMessage())*60;
+                        UHCCore.meetup = Integer.parseInt(event.getMessage())*60;
                         event.getPlayer().openInventory(GUIManager.makeTimingSettingsGUI(event.getPlayer()));
                         event.getPlayer().sendMessage(ChatColor.GOLD + "Meetup period is now set to " + event.getMessage() + " minutes");
                         break;
                     case 6:
-                        plugin.initialborder = Integer.parseInt(event.getMessage());
+                        UHCCore.initialborder = Integer.parseInt(event.getMessage());
                         event.getPlayer().openInventory(GUIManager.makeBorderSettingsGUI(event.getPlayer()));
                         event.getPlayer().sendMessage(ChatColor.GOLD + "Initial border size is now set to " + event.getMessage());
                         break;
                     case 7:
-                        plugin.bordersize = Integer.parseInt(event.getMessage());
+                        UHCCore.bordersize = Integer.parseInt(event.getMessage());
                         event.getPlayer().openInventory(GUIManager.makeBorderSettingsGUI(event.getPlayer()));
                         event.getPlayer().sendMessage(ChatColor.GOLD + "Border shrink size is now set to " + event.getMessage());
                         break;
                     case 8:
-                        plugin.meetupborder = Integer.parseInt(event.getMessage());
+                        UHCCore.meetupborder = Integer.parseInt(event.getMessage());
                         event.getPlayer().openInventory(GUIManager.makeBorderSettingsGUI(event.getPlayer()));
                         event.getPlayer().sendMessage(ChatColor.GOLD + "Meetup border size is now set to " + event.getMessage());
                         break;
