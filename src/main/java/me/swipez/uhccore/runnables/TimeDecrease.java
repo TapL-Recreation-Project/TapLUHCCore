@@ -30,6 +30,7 @@ public class TimeDecrease extends BukkitRunnable {
                     UHCCore.bordershrink);
         }
         if (UHCCore.pvpenable > 0) {
+            UHCCore.pvpenable --;
             SendTitleBarMessage.broadcast(ChatColor.GOLD + "Pvp Enables",
                     UHCCore.pvpenable);
         }
