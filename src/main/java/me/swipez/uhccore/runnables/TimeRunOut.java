@@ -44,11 +44,11 @@ public class TimeRunOut extends BukkitRunnable {
                 UHCCore.bordershrink = -1;
                 for (Player others : Bukkit.getOnlinePlayers()){
                     for (World world : Bukkit.getWorlds()) {
-                        world.getWorldBorder().setSize(plugin.bordersize*2);
+                        world.getWorldBorder().setSize(UHCCore.bordersize * 2);
                     }
                     double locx = Math.abs(others.getLocation().getX());
                     double locz = Math.abs(others.getLocation().getZ());
-                    if (locx > plugin.bordersize || locz > plugin.bordersize){
+                    if (locx > UHCCore.bordersize || locz > UHCCore.bordersize){
                         others.setHealth(0);
                         others.sendMessage(ChatColor.GOLD+"You did not make it inside the border!");
                     }

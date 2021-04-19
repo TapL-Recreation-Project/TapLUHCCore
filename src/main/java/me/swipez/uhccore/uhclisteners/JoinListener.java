@@ -30,8 +30,8 @@ public class JoinListener implements Listener {
                     e.getPlayer().setFoodLevel(20);
 
                     Random random = new Random();
-                    double randomx = random.nextInt(UHCCore.plugin.initialborder / 2);
-                    double randomz = random.nextInt(UHCCore.plugin.initialborder / 2);
+                    double randomx = random.nextInt(UHCCore.initialborder / 2);
+                    double randomz = random.nextInt(UHCCore.initialborder / 2);
                     int coinflipx = (int) (Math.random() * 100);
                     int coinflipz = (int) (Math.random() * 100);
                     if (coinflipx < 50) {

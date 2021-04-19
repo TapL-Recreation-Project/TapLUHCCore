@@ -230,20 +230,20 @@ public class GUIListener implements Listener {
                         if (BuiltInEvents.customEventsBooleans.get(BuiltInEvents.ALWAYS_DAY)) {
                             for (World world : Bukkit.getWorlds()) {
                                 world.setGameRule(GameRule.DO_DAYLIGHT_CYCLE, false);
-                                world.setTime(1000l);
+                                world.setTime(1000L);
                             }
                         }
-                        // TODO: NPE if default world isn't called ''world''
-                        STORED_DIFFICULTY = Bukkit.getWorld("world").getDifficulty();
+
+                        STORED_DIFFICULTY = Bukkit.getWorlds().get(0).getDifficulty();
                         if (!BuiltInEvents.customEventsBooleans.get(BuiltInEvents.LOSE_HUNGER) && !BuiltInEvents.customEventsBooleans.get(BuiltInEvents.HOSTILE_MOBS)) {
                             for (World world : Bukkit.getWorlds()) {
                                 world.setDifficulty(Difficulty.PEACEFUL);
                             }
                         }
-                        STORED_WEATHER = Bukkit.getWorld("world").getGameRuleValue(GameRule.DO_WEATHER_CYCLE);
+                        STORED_WEATHER = Bukkit.getWorlds().get(0).getGameRuleValue(GameRule.DO_WEATHER_CYCLE);
                         for (World world : Bukkit.getWorlds()) {
                             world.setGameRule(GameRule.DO_WEATHER_CYCLE, BuiltInEvents.customEventsBooleans.get(BuiltInEvents.DO_WEATHER));
-                            world.setClearWeatherDuration(100000000);
+                            world.setClearWeatherDuration(Integer.MAX_VALUE);
                         }
                         player.closeInventory();
                         player.playSound(player.getLocation(), Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 1, 1);
@@ -251,42 +251,42 @@ public class GUIListener implements Listener {
                         plugin.timeEdited.put(player.getUniqueId(), 1);
                         player.closeInventory();
                         player.sendMessage(ChatColor.GOLD + "How long to do you want the invincibility period to last for? (In Seconds), type x to go back");
-                        player.sendMessage(ChatColor.GOLD + "Currently is " + plugin.invincibility);
+                        player.sendMessage(ChatColor.GOLD + "Currently is " + UHCCore.invincibility);
                     } else if (clickeditem.isSimilar(ItemButtonManager.FINAL_HEAL)) {
                         plugin.timeEdited.put(player.getUniqueId(), 2);
                         player.closeInventory();
                         player.sendMessage(ChatColor.GOLD + "How far into the game should the final heal be? (In Seconds), type x to go back");
-                        player.sendMessage(ChatColor.GOLD + "Currently is " + plugin.finalheal);
+                        player.sendMessage(ChatColor.GOLD + "Currently is " + UHCCore.finalheal);
                     } else if (clickeditem.isSimilar(ItemButtonManager.PVP)) {
                         plugin.timeEdited.put(player.getUniqueId(), 3);
                         player.closeInventory();
                         player.sendMessage(ChatColor.GOLD + "How far into the game should the PVP be? (In Minutes), type x to go back");
-                        player.sendMessage(ChatColor.GOLD + "Currently is " + plugin.pvpenable / 60);
+                        player.sendMessage(ChatColor.GOLD + "Currently is " + UHCCore.pvpenable / 60);
                     } else if (clickeditem.isSimilar(ItemButtonManager.BORDER)) {
                         plugin.timeEdited.put(player.getUniqueId(), 4);
                         player.closeInventory();
                         player.sendMessage(ChatColor.GOLD + "How far into the game should the border shrink? (In Minutes), type x to go back");
-                        player.sendMessage(ChatColor.GOLD + "Currently is " + plugin.bordershrink / 60);
+                        player.sendMessage(ChatColor.GOLD + "Currently is " + UHCCore.bordershrink / 60);
                     } else if (clickeditem.isSimilar(ItemButtonManager.MEETUP)) {
                         plugin.timeEdited.put(player.getUniqueId(), 5);
                         player.closeInventory();
                         player.sendMessage(ChatColor.GOLD + "How far into the game should the meetup be? (In Minutes), type x to go back");
-                        player.sendMessage(ChatColor.GOLD + "Currently is " + plugin.meetup / 60);
+                        player.sendMessage(ChatColor.GOLD + "Currently is " + UHCCore.meetup / 60);
                     } else if (clickeditem.isSimilar(ItemButtonManager.INITIAL_BORDER)) {
                         plugin.timeEdited.put(player.getUniqueId(), 6);
                         player.closeInventory();
                         player.sendMessage(ChatColor.GOLD + "What should the radius of the initial border (first shrink) be? (In blocks), type x to go back");
-                        player.sendMessage(ChatColor.GOLD + "Currently is " + plugin.initialborder);
+                        player.sendMessage(ChatColor.GOLD + "Currently is " + UHCCore.initialborder);
                     } else if (clickeditem.isSimilar(ItemButtonManager.BORDER_SHRINK)) {
                         plugin.timeEdited.put(player.getUniqueId(), 7);
                         player.closeInventory();
                         player.sendMessage(ChatColor.GOLD + "What should the radius of the border shrink border (second shrink) be? (In blocks), type x to go back");
-                        player.sendMessage(ChatColor.GOLD + "Currently is " + plugin.bordersize);
+                        player.sendMessage(ChatColor.GOLD + "Currently is " + UHCCore.bordersize);
                     } else if (clickeditem.isSimilar(ItemButtonManager.MEETUP_BORDER)) {
                         plugin.timeEdited.put(player.getUniqueId(), 8);
                         player.closeInventory();
                         player.sendMessage(ChatColor.GOLD + "What should the radius of the meetup border (last/third shrink) be? (In blocks), type x to go back");
-                        player.sendMessage(ChatColor.GOLD + "Currently is " + plugin.meetupborder);
+                        player.sendMessage(ChatColor.GOLD + "Currently is " + UHCCore.meetupborder);
                     } else if (clickeditem.isSimilar(ItemButtonManager.END_UHC)) {
                         player.closeInventory();
                         player.playSound(player.getLocation(), Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 1, 0.5F);
