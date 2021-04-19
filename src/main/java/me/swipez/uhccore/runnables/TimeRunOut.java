@@ -2,7 +2,6 @@ package me.swipez.uhccore.runnables;
 
 import me.swipez.uhccore.UHCCore;
 import me.swipez.uhccore.api.UHCAPI;
-import me.swipez.uhccore.utils.SendTitleBarMessage;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -24,50 +23,50 @@ public class TimeRunOut extends BukkitRunnable {
     @Override
     public void run() {
         if (UHCAPI.isStarted){
-            if (plugin.invincibility == 0){
-                plugin.invincibility = -1;
+            if (UHCCore.invincibility == 0){
+                UHCCore.invincibility = -1;
                 for (Player others : Bukkit.getOnlinePlayers()){
                     others.setInvulnerable(false);
                 }
             }
-            if (plugin.finalheal == 0){
-                plugin.finalheal = -1;
+            if (UHCCore.finalheal == 0){
+                UHCCore.finalheal = -1;
                 for (Player others : Bukkit.getOnlinePlayers()){
                     double maxhealth = others.getAttribute(Attribute.GENERIC_MAX_HEALTH).getBaseValue();
                     others.setHealth(maxhealth);
                 }
             }
-            if (plugin.pvpenable == 0){
-                plugin.pvpenable = -1;
+            if (UHCCore.pvpenable == 0){
+                UHCCore.pvpenable = -1;
                 Bukkit.broadcastMessage(ChatColor.RED+"PVP Has been enabled!");
             }
-            if (plugin.bordershrink == 0){
-                plugin.bordershrink = -1;
+            if (UHCCore.bordershrink == 0){
+                UHCCore.bordershrink = -1;
                 for (Player others : Bukkit.getOnlinePlayers()){
                     for (World world : Bukkit.getWorlds()) {
-                        world.getWorldBorder().setSize(plugin.bordersize*2);
+                        world.getWorldBorder().setSize(UHCCore.bordersize * 2);
                     }
                     double locx = Math.abs(others.getLocation().getX());
                     double locz = Math.abs(others.getLocation().getZ());
-                    if (locx > plugin.bordersize || locz > plugin.bordersize){
+                    if (locx > UHCCore.bordersize || locz > UHCCore.bordersize){
                         others.setHealth(0);
                         others.sendMessage(ChatColor.GOLD+"You did not make it inside the border!");
                     }
                 }
             }
-            if (plugin.meetup == 0){
-                plugin.meetup = -1;
-                plugin.meetupdone = true;
+            if (UHCCore.meetup == 0){
+                UHCCore.meetup = -1;
+                UHCCore.meetupdone = true;
                 for (Player others : Bukkit.getOnlinePlayers()){
                     for (World world : Bukkit.getWorlds()) {
-                        world.getWorldBorder().setSize(plugin.meetupborder*2);
+                        world.getWorldBorder().setSize(UHCCore.meetupborder*2);
                     }
                     double locx = Math.abs(others.getLocation().getX());
                     double locz = Math.abs(others.getLocation().getZ());
-                    if (locx > plugin.meetupborder || locz > plugin.meetupborder){
+                    if (locx > UHCCore.meetupborder || locz > UHCCore.meetupborder){
                         Random random = new Random();
-                        double randomx = random.nextInt(plugin.meetupborder/2);
-                        double randomz = random.nextInt(plugin.meetupborder/2);
+                        double randomx = random.nextInt(UHCCore.meetupborder/2);
+                        double randomz = random.nextInt(UHCCore.meetupborder/2);
                         int coinflipx = (int) (Math.random()*100);
                         int coinflipz = (int) (Math.random()*100);
                         if (coinflipx < 50){

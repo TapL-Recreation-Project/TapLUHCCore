@@ -1,6 +1,5 @@
 package me.swipez.uhccore.guis;
 
-import me.swipez.uhccore.UHCCore;
 import me.swipez.uhccore.api.UHCAPI;
 import me.swipez.uhccore.api.UHCPlugin;
 import me.swipez.uhccore.customevents.BuiltInEvents;
@@ -13,10 +12,11 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 public class GUIManager {
-
 
     public static Inventory makeStartSettingsGUI(Player p, boolean started) {
         Inventory inventory = Bukkit.createInventory(p, 27, "UHC Main Menu");

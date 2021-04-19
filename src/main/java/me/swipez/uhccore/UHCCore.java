@@ -8,7 +8,11 @@ import me.swipez.uhccore.itembuttons.ItemButtonManager;
 import me.swipez.uhccore.runnables.BorderDivide;
 import me.swipez.uhccore.runnables.TimeDecrease;
 import me.swipez.uhccore.runnables.TimeRunOut;
-import me.swipez.uhccore.uhclisteners.*;
+import me.swipez.uhccore.uhclisteners.BlockBreakListener;
+import me.swipez.uhccore.uhclisteners.ChatEditListener;
+import me.swipez.uhccore.uhclisteners.DeathListener;
+import me.swipez.uhccore.uhclisteners.JoinListener;
+import me.swipez.uhccore.uhclisteners.PVPStop;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
@@ -109,6 +113,8 @@ public final class UHCCore extends JavaPlugin {
                 .shape("AAA", "AHA", "AAA")
                 .setIngredient('A', new RecipeChoice.ExactChoice(ingredient))
                 .setIngredient('H', new RecipeChoice.ExactChoice(ItemButtonManager.getGoldenHead()));
-        Bukkit.addRecipe(recipe);
+        if (Bukkit.getRecipe(new NamespacedKey(plugin, id)) == null) {
+            Bukkit.addRecipe(recipe);
+        }
     }
 }

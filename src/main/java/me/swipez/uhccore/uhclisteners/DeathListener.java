@@ -57,13 +57,13 @@ public class DeathListener implements Listener {
     }
 
     public Integer getAlivePlayerCount() {
-        int AlivePlayers = 0;
+        int alivePlayers = 0;
         for (Player others : Bukkit.getOnlinePlayers()){
             if (others.getGameMode().equals(GameMode.SURVIVAL)){
-                AlivePlayers++;
+                alivePlayers++;
             }
         }
-        return AlivePlayers;
+        return alivePlayers;
     }
 
     @EventHandler
