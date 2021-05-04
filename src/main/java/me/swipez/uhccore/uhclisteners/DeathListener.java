@@ -14,6 +14,7 @@ import org.bukkit.event.player.PlayerRespawnEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
+import org.bukkit.scheduler.BukkitRunnable;
 
 public class DeathListener implements Listener {
 
@@ -51,7 +52,13 @@ public class DeathListener implements Listener {
                 }
                 UHCStop.stopUHC(winner, "UHC has ended!");
             } else {
-                event.getPlayer().setGameMode(GameMode.SPECTATOR);
+                final Player respawning = event.getPlayer();
+                new BukkitRunnable() {
+                    @Override
+                    public void run() {
+                        respawning.setGameMode(GameMode.SPECTATOR);
+                    }
+                }.runTaskLater(plugin, 1);
             }
         }
     }
