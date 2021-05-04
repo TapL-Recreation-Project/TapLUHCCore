@@ -11,6 +11,7 @@ import org.bukkit.attribute.Attribute;
 import org.bukkit.entity.EntityType;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
@@ -76,7 +77,7 @@ public class JoinListener implements Listener {
                 e.getPlayer().setHealth(0);
             }
 
-            if (e.getPlayer().getLastDamageCause().equals(EntityDamageEvent.DamageCause.ENTITY_ATTACK)) {
+            if (e.getPlayer().getLastDamageCause() instanceof EntityDamageByEntityEvent) {
                 if (e.getPlayer().getLastDamageCause().getEntityType().equals(EntityType.PLAYER)) {
                     e.getPlayer().getWorld().dropItem(e.getPlayer().getLocation(), ItemButtonManager.getGoldenHead().clone());
                 }
