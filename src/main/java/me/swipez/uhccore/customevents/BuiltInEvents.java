@@ -51,7 +51,7 @@ public class BuiltInEvents implements Listener {
     }
 
     @EventHandler
-    public void onBreak(BlockBreakEvent e) {
+    public void onBlockBreak(BlockBreakEvent e) {
         if (!UHCAPI.isStarted) {
             return;
         }
@@ -60,15 +60,15 @@ public class BuiltInEvents implements Listener {
             Material brokenMaterial = e.getBlock().getType();
             if (heldMaterial.toString().toLowerCase().contains("_axe")
                     && brokenMaterial.toString().toLowerCase().contains("_log")) {
-                breakAdjacentWood(e.getBlock().getLocation(), e.getBlock().getType(), false);
+                breakAdjacentMaterial(e.getBlock().getLocation(), e.getBlock().getType(), false);
             }
         }
         if (customEventsBooleans.get(VEINMINER) && e.getBlock().getType().toString().toLowerCase().contains("_ore") && e.getPlayer().getInventory().getItemInMainHand().getType().toString().toLowerCase().contains("_pickaxe")) {
             if (e.getBlock().getType().equals(Material.IRON_ORE) || (e.getBlock().getType().equals(Material.GOLD_ORE) && !e.getPlayer().getInventory().getItemInMainHand().getType().toString().toLowerCase().contains("stone_"))) {
                 e.setDropItems(false);
-                breakAdjacentWood(e.getBlock().getLocation(), e.getBlock().getType(), customEventsBooleans.get(CUT_CLEAN));
+                breakAdjacentMaterial(e.getBlock().getLocation(), e.getBlock().getType(), customEventsBooleans.get(CUT_CLEAN));
             } else {
-                breakAdjacentWood(e.getBlock().getLocation(), e.getBlock().getType(), false);
+                breakAdjacentMaterial(e.getBlock().getLocation(), e.getBlock().getType(), false);
             }
         }
         if (customEventsBooleans.get(CUT_CLEAN) && e.getBlock().getType().toString().toLowerCase().contains("_ore") && e.getPlayer().getInventory().getItemInMainHand().getType().toString().toLowerCase().contains("_pickaxe") && !e.getPlayer().getInventory().getItemInMainHand().getType().toString().toLowerCase().contains("wooden_")) {
@@ -83,7 +83,7 @@ public class BuiltInEvents implements Listener {
 
     }
 
-    public void breakAdjacentWood(Location origin, Material woodMaterial, boolean cutClean) {
+    public void breakAdjacentMaterial(Location origin, Material material, boolean cutClean) {
         BlockFace[] blockFaces = new BlockFace[] { BlockFace.NORTH, BlockFace.SOUTH, BlockFace.EAST, BlockFace.WEST,
                 BlockFace.UP, BlockFace.DOWN };
         for (BlockFace face : blockFaces) {
@@ -93,8 +93,8 @@ public class BuiltInEvents implements Listener {
             } else {
                 origin.getBlock().breakNaturally();
             }
-            if (relative.getType() == woodMaterial) {
-                breakAdjacentWood(relative.getLocation(), woodMaterial, cutClean);
+            if (relative.getType() == material) {
+                breakAdjacentMaterial(relative.getLocation(), material, cutClean);
             }
         }
     }
