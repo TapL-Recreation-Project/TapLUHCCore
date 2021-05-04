@@ -19,30 +19,26 @@ public class TimeDecrease extends BukkitRunnable {
         if (!UHCAPI.isStarted) {
             return;
         }
+        // Game phases, from last to first
+        if (UHCCore.meetup > 0) UHCCore.meetup --;
+        if (UHCCore.bordershrink > 0) UHCCore.bordershrink --;
+        if (UHCCore.pvpenable > 0) UHCCore.pvpenable --;
+        if (UHCCore.finalheal > 0) UHCCore.finalheal --;
+        if (UHCCore.invincibility > 0) UHCCore.invincibility --;
+
+        // Only show message for current phase
         if (UHCCore.meetup > 0) {
-            UHCCore.meetup--;
-            SendTitleBarMessage.broadcast(ChatColor.GOLD + "Meetup " + UHCCore.meetupborder + "x" + UHCCore.meetupborder,
-                    UHCCore.meetup);
-        }
-        if (UHCCore.bordershrink > 0) {
-            UHCCore.bordershrink--;
-            SendTitleBarMessage.broadcast(ChatColor.GOLD + "Border Shrink " + UHCCore.bordersize + "x" + UHCCore.bordersize,
-                    UHCCore.bordershrink);
-        }
-        if (UHCCore.pvpenable > 0) {
-            UHCCore.pvpenable --;
-            SendTitleBarMessage.broadcast(ChatColor.GOLD + "Pvp Enables",
-                    UHCCore.pvpenable);
-        }
-        if (UHCCore.finalheal > 0) {
-            UHCCore.finalheal--;
-            SendTitleBarMessage.broadcast(ChatColor.GOLD + "Final Heal",
-                    UHCCore.finalheal);
-        }
-        if (UHCCore.invincibility > 0) {
-            UHCCore.invincibility--;
-            SendTitleBarMessage.broadcast(ChatColor.GOLD + "Invincibility",
-                    UHCCore.invincibility);
+            SendTitleBarMessage.broadcast(ChatColor.GOLD + "Meetup " + UHCCore.meetupborder + "x" +
+                    UHCCore.meetupborder, UHCCore.meetup);
+        } else if (UHCCore.bordershrink > 0) {
+            SendTitleBarMessage.broadcast(ChatColor.GOLD + "Border Shrink " + UHCCore.bordersize + "x" +
+                    UHCCore.bordersize, UHCCore.bordershrink);
+        } else if (UHCCore.pvpenable > 0) {
+            SendTitleBarMessage.broadcast(ChatColor.GOLD + "Pvp Enables", UHCCore.pvpenable);
+        } else if (UHCCore.finalheal > 0) {
+            SendTitleBarMessage.broadcast(ChatColor.GOLD + "Final Heal", UHCCore.finalheal);
+        } else if (UHCCore.invincibility > 0) {
+            SendTitleBarMessage.broadcast(ChatColor.GOLD + "Invincibility", UHCCore.invincibility);
         }
     }
 }
