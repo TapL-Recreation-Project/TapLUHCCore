@@ -14,6 +14,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.entity.CreatureSpawnEvent;
+import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.entity.FoodLevelChangeEvent;
@@ -115,7 +116,7 @@ public class BuiltInEvents implements Listener {
 
     @EventHandler
     public void onDeath(EntityDeathEvent e) {
-        if (e.getEntity().getLastDamageCause().getCause().equals(EntityDamageEvent.DamageCause.ENTITY_ATTACK) && UHCAPI.isStarted && customEventsBooleans.get(COOKED_MEAT) && e.getEntity().getLastDamageCause() != null) {
+        if (e.getEntity().getLastDamageCause() instanceof EntityDamageByEntityEvent && UHCAPI.isStarted && customEventsBooleans.get(COOKED_MEAT)) {
             for (ItemStack i : e.getDrops()) {
                 if (i.getType().equals(Material.BEEF)) i.setType(Material.COOKED_BEEF);
                 if (i.getType().equals(Material.RABBIT)) i.setType(Material.COOKED_RABBIT);
