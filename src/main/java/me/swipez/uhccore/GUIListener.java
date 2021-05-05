@@ -211,10 +211,7 @@ public class GUIListener implements Listener {
                                                     others.getWorld().getHighestBlockYAt(randomX, randomZ) + 1,
                                                     randomZ
                                             ));
-                                            for (int i = 0; i <= 36; i++) {
-                                                others.getInventory().clear(i);
-                                            }
-                                            others.getInventory().clear(40);
+                                            others.getInventory().clear();
                                         }
                                     );
 
