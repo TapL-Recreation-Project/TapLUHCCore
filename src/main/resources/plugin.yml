@@ -2,7 +2,7 @@ name: TapLUHCCore
 version: ${project.version}
 main: me.swipez.uhccore.UHCCore
 api-version: 1.16
-authors: [ notnotnotswipez, YHDiamond ]
+authors: [ notnotnotswipez, YHDiamond, barfuzzle99 ]
 commands:
   uhcmenu:
     usage: /uhcmenu
